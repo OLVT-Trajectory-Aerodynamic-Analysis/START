@@ -39,11 +39,11 @@ function [] = main()
     [~, sourceList] = createSourceObject("rawData/RasAeroII_Skipper1B", "RASAeroII", "simulatedData", sourceList);
 
     %% Define Configurable Parameters
-    configs.plotAllData = 0;
+    configs.plotData = 0;
     configs.plotSimulatedData = 1;
-    configs.plotFlightlData = 1;
-    configs.plotIndividualSensors = 0;
-    configs.plotOverlayingFigures = 1;
+    configs.plotFlightData = 1;
+    configs.plotIndividualSensors = 0; % I don't think this is necessary/helpful
+    configs.plotOverlayingFigures = 1; 
     configs.plotDifferences = 1;
 
     %% Call manager functions
