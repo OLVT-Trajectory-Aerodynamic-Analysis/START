@@ -1,0 +1,1 @@
+function plotIndiv(data,config)

@@ -27,7 +27,10 @@ function [] = manager(sourceList, config)
     data = 9; %input data variable here (not as string lol);
     %% Call plotting functions
     disp(config)
-    
+    addpath(genpath(pwd)) % Adds all subfolders into MATLAB path
+    % Note: Unsure if this adds subfolders of this folder or the primary
+    % folder
+
     if configs.plotData == 1 %Do you want ANY graphs?
         if configs.plotSimulatedData == 1 %Plot RAS
             plotRAS(data,config) 
@@ -40,7 +43,7 @@ function [] = manager(sourceList, config)
         end
 
         if configs.plotOverlayingFigures == 1 % simul vs actual
-            plotIndiv(data)
+            plotIndiv(data,config)
         end
         if configs.plotDifferences == 1 %diff ras 
             plotIndiv(data)
