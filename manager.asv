@@ -29,7 +29,7 @@ function [] = manager(sourceList, config)
     %% Call plotting functions
     disp(config)
     addpath(genpath(pwd)) % Adds all subfolders into MATLAB path
-    % For all processed data, plot all the sensors onto the same graph
+    % For all processed dat
 
     if configs.plotData == 1 %Do you want ANY graphs?
         if configs.plotSimulatedData == 1 %Plot RAS
