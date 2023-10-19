@@ -27,32 +27,10 @@ function [] = manager(sourceList, config)
     end
     data = 9; %input data variable here (not as string lol);
     %% Call plotting functions
-    disp(config)
-    addpath(genpath(pwd)) % Adds all subfolders into MATLAB path
-    % For all processed data, plot all the sensors onto the same graph
-
-    if configs.plotData == 1 %Do you want ANY graphs?
-        if configs.plotSimulatedData == 1 %Plot RAS
-            plotRAS(data,config) 
-        end
-        if configs.plotFlightData == 1 %Plot Processed Sensor Data
-            if configs.plotIndividualSensors == 1 % Plot before fusing all datas
-                %do after PAT
-            end
-            plotFlight(data,config)
-        end
-
-        if configs.plotOverlayingFigures == 1 % simul vs actual
-            plotIndiv(data,config)
-        end
-        if configs.plotDifferences == 1 %diff ras 
-            plotIndiv(data)
-        end
-
-    end
-         %do you want any plots?
-
-        
+    % To output just the main things (altitude, tilt, vel, accel, atm,
+    % MaxQ), use this function. It iterates through all the sensors and
+    % overlays their data.
     
-
+    % Assuming SourceList Austin's filtered structure:
+    plotFlights(sourceList)
 end
