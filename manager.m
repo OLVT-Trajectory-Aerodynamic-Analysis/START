@@ -20,17 +20,17 @@ function [] = manager(sourceList, config)
     %% Initialize Variables
     numSources = length(sourceList);
     processedData = zeros(1, numSources);
-
     %% Get raw data into SD format
     for sourceNum = 1:numSources
         processedData(sourceNum) = createSDFormat(sourceList(sourceNum));
     end
     data = 9; %input data variable here (not as string lol);
     %% Call plotting functions
+    addpath(genpath(pwd)) % adds all subfolders of Current Folder into MATLAB Path
+
     % To output just the main things (altitude, tilt, vel, accel, atm,
-    % MaxQ), use this function. It iterates through all the sensors and
+    % MaxQ), use plotFlights. It iterates through all the sensors and
     % overlays their data.
-    
     % Assuming SourceList Austin's filtered structure:
     plotFlights(sourceList)
 end
