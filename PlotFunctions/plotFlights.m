@@ -16,11 +16,13 @@ figure('Name','Atmosphere','NumberTitle','off')
 hold on; grid on
 figure('Name','MaxQ','NumberTitle','off')
 hold on; grid on
+legendList = {};
 
 for i = 1:length(sourceList)
     % Initialize the dataset
     data = sourceList(i);
     t = data.time;
+    legendList(i) = {"dataset " + num2str(i)};
     %% Positions 
     %Altitude
     alt = data.position.altitude;
@@ -35,7 +37,6 @@ for i = 1:length(sourceList)
     plot(t,vMag)
     title('Velocity')
     xlabel('Time [s]'); ylabel('Velocity [?]')
-    legend('vMag')
     %% Acceleration
     aMag = data.acceleration.magnitude;
     %Acceleration plot
@@ -43,7 +44,6 @@ for i = 1:length(sourceList)
     plot(t,vMag)
     title('Acceleration')
     xlabel('Time [s]'); ylabel('Acceleration [?]')
-    legend('aMag')
     %% Gyro [needs edit]
     tilt = data.gyro.tilt;
     %Gyro plots
@@ -85,4 +85,17 @@ for i = 1:length(sourceList)
     title('MaxQ v Altitude')
     xlabel('Dynamic Pressure [?]'); ylabel('Altitude [ft]'); 
 end
+figure(1)
+legend(legendList)
+figure(2)
+legend(legendList)
+figure(3)
+legend(legendList)
+figure(4)
+legend(legendList)
+figure(5)
+legend(legendList)
+figure(6)
+legend(legendList)
+
 end
