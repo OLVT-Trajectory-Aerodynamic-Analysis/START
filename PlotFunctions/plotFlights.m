@@ -20,7 +20,7 @@ legendList = {};
 
 for i = 1:length(sourceList)
     % Initialize the dataset
-    data = sourceList(i);
+    data = sourceList{i, 1};
     t = data.time;
     legendList(i) = {"dataset " + num2str(i)};
     %% Positions 

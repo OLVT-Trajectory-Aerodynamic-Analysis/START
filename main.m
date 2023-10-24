@@ -34,9 +34,9 @@ function [] = main()
     configs = struct;
     
     %% Input Sources
-    [~, sourceList] = createSourceObject("rawData/AimData", "AIM", "rawData", sourceList);
-    [~, sourceList] = createSourceObject("rawData/EasyMini_2023-04-16-serial-10923-flight-0002.csv", "EasyMini", "rawData", sourceList);
-    [~, sourceList] = createSourceObject("rawData/RasAeroII_Skipper1B", "RASAeroII", "simulatedData", sourceList);
+    %[~, sourceList] = createSourceObject("rawData/Skipper1B/AimData", "AIM", "rawData", sourceList);
+    [~, sourceList] = createSourceObject("rawData/Skipper1B/EasyMini_2023-04-16-serial-10923-flight-0002.csv", "EasyMini", "rawData", sourceList);
+    [~, sourceList] = createSourceObject("rawData/Skipper1B/RasAeroII_Skipper1B", "RASAeroII", "simulatedData", sourceList);
 
     %% Define Configurable Parameters
     configs.plotData = 0;
