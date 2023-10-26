@@ -24,6 +24,7 @@ for i = 1:length(sourceList)
 end
 
 
+
 %% Graph Positions 
 figure(1)
 for i = 1:length(sourceList)
@@ -103,6 +104,7 @@ for i = 1:length(sourceList)
     hold on
 end
 xlabel('Time [s]'); ylabel('Temperature [K]')
+grid on
 hold off
 
 nexttile
@@ -115,6 +117,7 @@ for i = 1:length(sourceList)
     hold on
 end
 xlabel('Time [s]'); ylabel('Density [kg m^-3]')
+grid on
 hold off
 
 leg = legend(legendList, 'Orientation', 'Horizontal');
@@ -137,6 +140,7 @@ for i = 1:length(sourceList)
 end
 title('MaxQ v Time')
 xlabel('Time [s]'); ylabel('Dynamic Pressure [Pa]')
+grid on
 hold off
     
 nexttile
@@ -151,6 +155,7 @@ for i = 1:length(sourceList)
 end
 title('MaxQ v altitude')
 xlabel('Altitude [m]'); ylabel('Dynamic Pressure [Pa]')
+grid on
 hold off
 
 leg = legend(legendList, 'Orientation', 'Horizontal');
