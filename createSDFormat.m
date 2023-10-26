@@ -48,9 +48,9 @@
 % data.atmosphere.temperature
 % data.atmosphere.density
 
-function [processedData] = createSDFormat(data)
+function [processedData] = createSDFormat(data, rasAeroIILaunchSite)
     if data.dataType == "RASAeroII"
-        processedData = RasCSVToStd(data.filepath);
+        processedData = RasCSVToStd(data.filepath, rasAeroIILaunchSite);
     elseif data.dataType == "EasyMini"
         processedData = EasyMiniCSVToStd(data.filepath);
     elseif data.dataType == "Telemetrum"

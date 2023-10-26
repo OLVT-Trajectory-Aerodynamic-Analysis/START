@@ -16,14 +16,14 @@
 %   There are currently no config variables.
 % 
 
-function [] = manager(sourceList, config)
+function [] = manager(sourceList, rasAeroIILaunchSite, config)
     %% Initialize Variables
     numSources = length(sourceList);
     processedData = {};
 
     %% Get raw data into SD format
     for sourceNum = 1:numSources
-        processedData{sourceNum} = createSDFormat(sourceList(sourceNum));
+        processedData{sourceNum} = createSDFormat(sourceList(sourceNum), rasAeroIILaunchSite);
     end
 
     %%  Kalman filer

@@ -38,8 +38,15 @@ function [] = main()
     %[~, sourceList] = createSourceObject("rawData/Skipper1B/AimData", "AIM", "rawData", sourceList);
     [~, sourceList] = createSourceObject("rawData/Skipper1B/EasyMini_2023-04-16-serial-10923-flight-0002.csv", "EasyMini", "rawData", sourceList);
     [~, sourceList] = createSourceObject("rawData/Skipper1B/RasAeroII_Skipper1B", "RASAeroII", "simulatedData", sourceList);
-
-
+    
+    %% Ras Aero II Launch Site Configurations
+    rasAeroIILaunchSite = struct;
+    rasAeroIILaunchSite.elevation_ft = 423;
+    rasAeroIILaunchSite.temperature_F = 60;
+    rasAeroIILaunchSite.pressure_inhg = "null";
+    rasAeroIILaunchSite.windSpeed_mph = 10;
+    rasAeroIILaunchSite.launchRailLength_ft = 20;
+    rasAeroIILaunchSite.launchAngle = 0;
 
     %% Define Configurable Parameters
     configs.plotData = 0;

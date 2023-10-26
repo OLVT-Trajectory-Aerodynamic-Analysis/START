@@ -1,4 +1,4 @@
-function struct = RasCSVToStd(csv)
+function struct = RasCSVToStd(csv, rasAeroIILaunchSite)
     % usage: dataStructure = csvToStruct(csv)
     %
     % Converts data from a RASAeroII csv file to a standardized data structure
@@ -16,13 +16,23 @@ function struct = RasCSVToStd(csv)
     %% Parsing Input:
     fixed = StandardTime(csv,1);
     
+    %% Unit Conversion for Launch Site
+    rasAeroIILaunchSite.elevation = rasAeroIILaunchSite.elevation_ft * 0.3048;
+    rasAeroIILaunchSite.temperature = ...
+        (5/9)*(rasAeroIILaunchSite.temperature_F - 32) + 273.15;
+    if (rasAeroIILaunchSite.pressure_inhg ~= "null")
+        rasAeroIILaunchSite.pressure = rasAeroIILaunchSite.pressure_inhg * 3386.39;
+    end
+    rasAeroIILaunchSite.windSpeed = rasAeroIILaunchSite.windSpeed_mph * 0.44704;
+    rasAeroIILaunchSite.launchRailLength = rasAeroIILaunchSite.launchRailLength_ft * 0.3048;
+
     %% Operational Code:
     struct.dataType = "RasAeroII";
     
     struct.time = fixed(:,1);
     
     struct.position.magnitude = sqrt((fixed(:,23)).^2 + (fixed(:,24).^2)) * 0.3048; % [m]
-    struct.position.altitude = (fixed(:,23) + 413) * 0.3048;
+    struct.position.altitude = (fixed(:,23)) * 0.3048 + rasAeroIILaunchSite.elevation;
     %struct.position.Xposition = null;
     %struct.position.Yposition = null;
     struct.position.Zposition = fixed(:,23) * 0.3048; % [m]
@@ -42,8 +52,9 @@ function struct = RasCSVToStd(csv)
     %struct.gyro.yaw = null;
     struct.gyro.tilt = abs(fixed(:,21) - 90); % []
 
+    % Launch site cond need to be factoered in here
     [struct.atmosphere.temperature,~, ...
         struct.atmosphere.pressure, ...
-        struct.atmosphere.density] = atmosisa(struct.position.Zposition + (413*0.3048));
+        struct.atmosphere.density] = atmosisa(struct.position.altitude);
 
     end
