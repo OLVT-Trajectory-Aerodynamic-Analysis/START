@@ -26,6 +26,8 @@ function [] = manager(sourceList, config)
         processedData{sourceNum} = createSDFormat(sourceList(sourceNum));
     end
 
+    %%  Kalman filer
+
     %% Call plotting functions
     addpath(genpath(pwd)) % adds all subfolders of Current Folder into MATLAB Path
 

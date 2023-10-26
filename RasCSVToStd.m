@@ -17,10 +17,12 @@ function struct = RasCSVToStd(csv)
     fixed = StandardTime(csv,1);
     
     %% Operational Code:
+    struct.dataType = "RasAeroII";
+    
     struct.time = fixed(:,1);
     
     struct.position.magnitude = sqrt((fixed(:,23)).^2 + (fixed(:,24).^2)) * 0.3048; % [m]
-    %struct.position.altitude = null;
+    struct.position.altitude = (fixed(:,23) + 413) * 0.3048;
     %struct.position.Xposition = null;
     %struct.position.Yposition = null;
     struct.position.Zposition = fixed(:,23) * 0.3048; % [m]
@@ -38,9 +40,10 @@ function struct = RasCSVToStd(csv)
     %struct.gyro.roll = null;
     %struct.gyro.pitch = null;
     %struct.gyro.yaw = null;
-    struct.gyro.tilt = fixed(:,21); % []
-    
-    %struct.atmosphere.pressure = null;
-    %struct.atmosphere.temperature = null;
-    %struct.atmosphere.density = null;
+    struct.gyro.tilt = abs(fixed(:,21) - 90); % []
+
+    [struct.atmosphere.temperature,~, ...
+        struct.atmosphere.pressure, ...
+        struct.atmosphere.density] = atmosisa(struct.position.Zposition + (413*0.3048));
+
     end

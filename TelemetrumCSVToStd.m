@@ -17,6 +17,8 @@ function struct = TelemetrumCSVToStd(csv)
     fixed = StandardTime(csv,5);
     
     %% Operational Code:
+    struct.dataType = "Telemetrum";
+    
     struct.time = fixed(:,5);                           % [s] 
     
     struct.position.magnitude = [];
