@@ -46,7 +46,7 @@ function [] = main()
     rasAeroIILaunchSite.pressure_inhg = "null";
     rasAeroIILaunchSite.windSpeed_mph = 10;
     rasAeroIILaunchSite.launchRailLength_ft = 20;
-    rasAeroIILaunchSite.launchAngle = 0;
+    rasAeroIILaunchSite.launchAngle = 5;
 
     %% Define Configurable Parameters
     configs.plotData = 0;

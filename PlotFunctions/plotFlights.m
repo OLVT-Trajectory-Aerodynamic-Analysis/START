@@ -92,6 +92,7 @@ for i = 1:length(sourceList)
     hold on
 end
 xlabel('Time [s]'); ylabel('Pressure [Pa]')
+grid on
 hold off
 
 nexttile
