@@ -36,5 +36,5 @@ function [] = manager(sourceList, rasAeroIILaunchSite, config)
     % MaxQ), use plotFlights. It iterates through all the sensors and
     % overlays their data.
     % Assuming SourceList Austin's filtered structure:
-    plotFlights(processedData)
+    plotFlights(filteredData)
 end
