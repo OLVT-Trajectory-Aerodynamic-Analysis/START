@@ -20,8 +20,7 @@
 % Sources will be inputted using the createSourceObject method. Each source 
 % will have be inputted using its path location, source type, and either 
 % rawData or simulated source. Finally, the createSourceObject will include
-% a parameter for where the lists should be stored. Unless you know what
-% your doing I suggest you leave that alone
+% a parameter for where the lists should be stored.
 %
 % For example 
 % [source1, sourceList] = createSourceObject("rawData/exampleFile", "easyMini", "rawData", sourceList);
@@ -36,9 +35,9 @@ function [] = main()
     
     %% Input Sources
     %[~, sourceList] = createSourceObject("rawData/Skipper1B/AimData", "AIM", "rawData", sourceList);
-    [~, sourceList] = createSourceObject("rawData/Skipper1B/EasyMini_2023-04-16-serial-10923-flight-0002.csv", "EasyMini", "rawData", sourceList);
-    [~, sourceList] = createSourceObject("rawData/Skipper1B/RasAeroII_Skipper1B", "RASAeroII", "simulatedData", sourceList);
-    
+    [~, sourceList] = createSourceObject("rawData/Skipper1C/Telemetrum-2023-10-15-serial-10923-flight-0003-via-7175", "Telemetrum", "rawData", sourceList);
+    [~, sourceList] = createSourceObject("rawData/Skipper1C/RasAeroII_Skipper1C", "RASAeroII", "simulatedData", sourceList);
+   
     %% Ras Aero II Launch Site Configurations
     rasAeroIILaunchSite = struct;
     rasAeroIILaunchSite.elevation_ft = 423;
