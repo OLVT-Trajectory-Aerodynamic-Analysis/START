@@ -36,8 +36,9 @@ function [] = main()
     %% Input Sources
     %[~, sourceList] = createSourceObject("rawData/Skipper1B/AimData", "AIM", "rawData", sourceList);
     [~, sourceList] = createSourceObject("rawData/Skipper1C/Telemetrum-2023-10-15-serial-10923-flight-0003-via-7175", "Telemetrum", "rawData", sourceList);
-    [~, sourceList] = createSourceObject("rawData/Skipper1C/RasAeroII_Skipper1C", "RASAeroII", "simulatedData", sourceList);
-   
+    [~, sourceList] = createSourceObject("rawData/Skipper1C/RasAeroII_Skipper1C_0AoA", "RASAeroII", "simulatedData", sourceList);
+    [~, sourceList] = createSourceObject("rawData/Skipper1C/RasAeroII_Skipper1C_5AoA", "RASAeroII", "simulatedData", sourceList);
+
     %% Ras Aero II Launch Site Configurations
     rasAeroIILaunchSite = struct;
     rasAeroIILaunchSite.elevation_ft = 423;

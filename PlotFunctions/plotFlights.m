@@ -4,7 +4,7 @@ function plotFlights(sourceList)
 
 % Initialize the Figures
 set(0,'DefaultFigureWindowStyle','docked')
-figure('Name','Position','NumberTitle','off')
+figure('Name','Height','NumberTitle','off')
 hold on; grid on
 figure('Name','Vel','NumberTitle','off')
 hold on; grid on
@@ -29,12 +29,12 @@ end
 figure(1)
 for i = 1:length(sourceList)
     time = sourceList{1, i}.time;
-    altitude = sourceList{1, i}.position.altitude;
+    altitude = sourceList{1, i}.position.Zposition;
     plot(time, altitude)
     hold on
 end
-title('Altitude')
-xlabel('Time [s]'); ylabel('Altitude [m]')
+title('Height')
+xlabel('Time [s]'); ylabel('Height above launchpad [m]')
 legend(legendList)
 hold off
 
