@@ -20,8 +20,7 @@
 % Sources will be inputted using the createSourceObject method. Each source 
 % will have be inputted using its path location, source type, and either 
 % rawData or simulated source. Finally, the createSourceObject will include
-% a parameter for where the lists should be stored. Unless you know what
-% your doing I suggest you leave that alone
+% a parameter for where the lists should be stored.
 %
 % For example 
 % [source1, sourceList] = createSourceObject("rawData/exampleFile", "easyMini", "rawData", sourceList);
@@ -29,25 +28,35 @@
 %
 
 function [] = main()
+    close all
     % Initialize Variables
     sourceList = [];
     configs = struct;
     
     %% Input Sources
-    [~, sourceList] = createSourceObject("rawData/AimData", "AIM", "rawData", sourceList);
-    [~, sourceList] = createSourceObject("rawData/EasyMini_2023-04-16-serial-10923-flight-0002.csv", "EasyMini", "rawData", sourceList);
-    [~, sourceList] = createSourceObject("rawData/RasAeroII_Skipper1B", "RASAeroII", "simulatedData", sourceList);
+    %[~, sourceList] = createSourceObject("rawData/Skipper1B/AimData", "AIM", "rawData", sourceList);
+    [~, sourceList] = createSourceObject("rawData/Skipper1C/Telemetrum-2023-10-15-serial-10923-flight-0003-via-7175", "Telemetrum", "rawData", sourceList);
+    [~, sourceList] = createSourceObject("rawData/Skipper1C/RasAeroII_Skipper1C_0AoA", "RASAeroII", "simulatedData", sourceList);
+    [~, sourceList] = createSourceObject("rawData/Skipper1C/RasAeroII_Skipper1C_5AoA", "RASAeroII", "simulatedData", sourceList);
+
+    %% Ras Aero II Launch Site Configurations
+    rasAeroIILaunchSite = struct;
+    rasAeroIILaunchSite.elevation_ft = 423;
+    rasAeroIILaunchSite.temperature_F = 60;
+    rasAeroIILaunchSite.pressure_inhg = "null";
+    rasAeroIILaunchSite.windSpeed_mph = 10;
+    rasAeroIILaunchSite.launchRailLength_ft = 20;
+    rasAeroIILaunchSite.launchAngle = 5;
 
     %% Define Configurable Parameters
     configs.plotData = 0;
     configs.plotSimulatedData = 1;
     configs.plotFlightData = 1;
-    configs.plotIndividualSensors = 0; % I don't think this is necessary/helpful
     configs.plotOverlayingFigures = 1; 
     configs.plotDifferences = 1;
 
     %% Call manager functions
-    manager(sourceList, configs)
+    manager(sourceList, rasAeroIILaunchSite, configs)
 end
 
 

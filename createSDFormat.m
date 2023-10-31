@@ -48,7 +48,16 @@
 % data.atmosphere.temperature
 % data.atmosphere.density
 
-function [processedData] = createSDFormat(data)
-    disp(data)
-    processedData = 0;
+function [processedData] = createSDFormat(data, rasAeroIILaunchSite)
+    if data.dataType == "RASAeroII"
+        processedData = RasCSVToStd(data.filepath, rasAeroIILaunchSite);
+    elseif data.dataType == "EasyMini"
+        processedData = EasyMiniCSVToStd(data.filepath);
+    elseif data.dataType == "Telemetrum"
+        processedData = TelemetrumCSVToStd(data.filepath);
+    else
+        msg = "The data type inputted does not match any existing" + ...
+            "dataTypes.";
+        error(msg)
+    end
 end

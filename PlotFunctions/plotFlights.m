@@ -4,7 +4,7 @@ function plotFlights(sourceList)
 
 % Initialize the Figures
 set(0,'DefaultFigureWindowStyle','docked')
-figure('Name','Position','NumberTitle','off')
+figure('Name','Height','NumberTitle','off')
 hold on; grid on
 figure('Name','Vel','NumberTitle','off')
 hold on; grid on
@@ -16,86 +16,151 @@ figure('Name','Atmosphere','NumberTitle','off')
 hold on; grid on
 figure('Name','MaxQ','NumberTitle','off')
 hold on; grid on
-legendList = {};
 
+%% Create legendList
+legendList = strings(1, length(sourceList) );
 for i = 1:length(sourceList)
-    % Initialize the dataset
-    data = sourceList(i);
-    t = data.time;
-    legendList(i) = {"dataset " + num2str(i)};
-    %% Positions 
-    %Altitude
-    alt = data.position.altitude;
-    figure(1)
-    plot(t,alt)
-    title('Altitude')
-    xlabel('Time [s]'); ylabel('Altitude [ft]')
-    %% Velocities
-    vMag = data.velocity.magnitude;
-    %Velocity plot
-    figure(2)
-    plot(t,vMag)
-    title('Velocity')
-    xlabel('Time [s]'); ylabel('Velocity [?]')
-    %% Acceleration
-    aMag = data.acceleration.magnitude;
-    %Acceleration plot
-    figure(3)
-    plot(t,vMag)
-    title('Acceleration')
-    xlabel('Time [s]'); ylabel('Acceleration [?]')
-    %% Gyro [needs edit]
-    tilt = data.gyro.tilt;
-    %Gyro plots
-    figure(4)
-    plot(t,tilt)
-    title('Tilt')
-    xlabel('Time (s)'); ylabel('angle [?]')
-    %% Atmosphere
-    atmP = data.atmosphere.pressure;
-    atmT = data.atmosphere.temperature;
-    atmD = data.atmosphere.density;
-    %Atmosphere plots: Thinking of putting all 3 of these into 1 window
-    figure(5)
-    subplot(2,2,1)
-    plot(atmP,alt)
-    title('Pressure')
-    xlabel('Pressure [?]'); ylabel('Altitude [ft]')
-    
-    subplot(2,2,2)
-    plot(atmT,alt)
-    title('Temperature')
-    xlabel('Temperature [?]'); ylabel('Altitude [ft]')
-    
-    subplot(2,2,3)
-    plot(atmD,alt)
-    title('Density')
-    xlabel('Density [?]'); ylabel('Altitude [ft]')
-    %% Max Q (Idk where to put this)
-    figure(6)
-    dynamicPressure = (atmD.*(vMag.^2))/2;
-    
-    subplot(1,2,1)
-    plot(t,dynamicPressure)
-    title('MaxQ v Time')
-    xlabel('Time [s]'); ylabel('Dynamic Pressure [?]')
-    
-    subplot(1,2,2)
-    plot(alt,dynamicPressure)
-    title('MaxQ v Altitude')
-    xlabel('Dynamic Pressure [?]'); ylabel('Altitude [ft]'); 
+    legendList(1, i) = sourceList{1, i}.dataType;
 end
+
+
+
+%% Graph Positions 
 figure(1)
+for i = 1:length(sourceList)
+    time = sourceList{1, i}.time;
+    altitude = sourceList{1, i}.position.Zposition;
+    plot(time, altitude)
+    hold on
+end
+title('Height')
+xlabel('Time [s]'); ylabel('Height above launchpad [m]')
 legend(legendList)
+hold off
+
+%% Graph Velocities
 figure(2)
+for i = 1:length(sourceList)
+    time = sourceList{1, i}.time;
+    vMag = sourceList{1, i}.velocity.magnitude;
+    plot(time, vMag)
+    hold on
+end
+title('Velocity')
+xlabel('Time [s]'); ylabel('Velocity [m s^-1]')
 legend(legendList)
+hold off
+
+%% Graph Acceleration
 figure(3)
+for i = 1:length(sourceList)
+    time = sourceList{1, i}.time;
+    aMag = sourceList{1, i}.acceleration.magnitude;
+    plot(time, aMag)
+    hold on
+end
+title('Acceleration')
+xlabel('Time [s]'); ylabel('Acceleration [m s^-2]')
 legend(legendList)
+hold off
+
+%% Graph Gyro [needs edit]
 figure(4)
+for i = 1:length(sourceList)
+    time = sourceList{1, i}.time;
+    tilt = sourceList{1, i}.gyro.tilt;
+    %Gyro plots
+    plot(time, tilt)
+    hold on
+end
+title('Tilt')
+xlabel('Time (s)'); ylabel('angle [degrees]')
 legend(legendList)
-figure(5)
-legend(legendList)
+hold off
+%% Graph Atmosphere
+figure (5)
+
+tiledlayout(3, 1)
+
+% Pressure
+nexttile
+for i = 1:length(sourceList)
+    time = sourceList{1, i}.time;
+    atmP = sourceList{1, i}.atmosphere.pressure;
+
+    plot(time, atmP)
+    hold on
+end
+xlabel('Time [s]'); ylabel('Pressure [Pa]')
+grid on
+hold off
+
+nexttile
+% Temperature
+for i = 1:length(sourceList)
+    time = sourceList{1, i}.time;
+    atmT = sourceList{1, i}.atmosphere.temperature;
+
+    plot(time, atmT)
+    hold on
+end
+xlabel('Time [s]'); ylabel('Temperature [K]')
+grid on
+hold off
+
+nexttile
+% Density
+for i = 1:length(sourceList)
+    time = sourceList{1, i}.time;
+    atmD = sourceList{1, i}.atmosphere.density;
+
+    plot(time, atmD)
+    hold on
+end
+xlabel('Time [s]'); ylabel('Density [kg m^-3]')
+grid on
+hold off
+
+leg = legend(legendList, 'Orientation', 'Horizontal');
+leg.Layout.Tile = 'north';
+
+
+    %% Max Q (Idk where to put this)
 figure(6)
-legend(legendList)
+tiledlayout(1, 2);
+
+nexttile
+for i = 1:length(sourceList)
+    time = sourceList{1, i}.time;
+    vMag = sourceList{1, i}.velocity.magnitude;
+    atmD = sourceList{1, i}.atmosphere.density;
+    
+    dynamicPressure = (atmD.*(vMag.^2))/2;
+    plot(time, dynamicPressure)
+    hold on
+end
+title('MaxQ v Time')
+xlabel('Time [s]'); ylabel('Dynamic Pressure [Pa]')
+grid on
+hold off
+    
+nexttile
+for i = 1:length(sourceList)
+    altitude = sourceList{1, i}.position.altitude;
+    vMag = sourceList{1, i}.velocity.magnitude;
+    atmD = sourceList{1, i}.atmosphere.density;
+    
+    dynamicPressure = (atmD.*(vMag.^2))/2;
+    plot(altitude, dynamicPressure)
+    hold on
+end
+title('MaxQ v altitude')
+xlabel('Altitude [m]'); ylabel('Dynamic Pressure [Pa]')
+grid on
+hold off
+
+leg = legend(legendList, 'Orientation', 'Horizontal');
+leg.Layout.Tile = 'north';
+
 
 end

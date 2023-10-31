@@ -17,6 +17,8 @@ function struct = EasyMiniCSVToStd(csv)
     fixed = StandardTime(csv,5);
     
     %% Operational Code:
+    struct.dataType = "EasyMini";
+    
     struct.time = fixed(:,5);                           % [s] 
     
     %struct.position.magnitude = null;
@@ -41,6 +43,7 @@ function struct = EasyMiniCSVToStd(csv)
     struct.gyro.tilt = fixed(:,26);                     % []
     
     struct.atmosphere.pressure = fixed(:,9);            % [Pa]
-    struct.atmosphere.temperature = fixed(:,13);        % [C]
-    %struct.atmosphere.density = null;
+    struct.atmosphere.temperature = fixed(:,13)+273.15; % [C]
+    struct.atmosphere.density = struct.atmosphere.pressure/...
+                                    ((struct.atmosphere.temperature) * 287.05);
     end

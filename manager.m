@@ -16,15 +16,19 @@
 %   There are currently no config variables.
 % 
 
-function [] = manager(sourceList, config)
+function [] = manager(sourceList, rasAeroIILaunchSite, config)
     %% Initialize Variables
     numSources = length(sourceList);
-    processedData = zeros(1, numSources);
+    processedData = {};
+
     %% Get raw data into SD format
     for sourceNum = 1:numSources
-        processedData(sourceNum) = createSDFormat(sourceList(sourceNum));
+        processedData{sourceNum} = createSDFormat(sourceList(sourceNum), rasAeroIILaunchSite);
     end
-    data = 9; %input data variable here (not as string lol);
+
+    %%  Kalman filer
+    filteredData = filterData(processedData);
+
     %% Call plotting functions
     addpath(genpath(pwd)) % adds all subfolders of Current Folder into MATLAB Path
 
@@ -32,5 +36,5 @@ function [] = manager(sourceList, config)
     % MaxQ), use plotFlights. It iterates through all the sensors and
     % overlays their data.
     % Assuming SourceList Austin's filtered structure:
-    plotFlights(sourceList)
+    plotFlights(filteredData)
 end
