@@ -48,6 +48,13 @@ function [] = main()
     rasAeroIILaunchSite.launchRailLength_ft = 20;
     rasAeroIILaunchSite.launchAngle = 5;
 
+    %% Rocket Body Parameters
+    rocket = struct;
+    rocket.sustainerMass = 10;
+    rocket.totalMass = -1;
+    rocket.sustainerMotor = "J460T";
+    rocket.boosterMotor = "null";
+
     %% Define Configurable Parameters
     configs.plotData = 0;
     configs.plotSimulatedData = 1;
@@ -56,7 +63,7 @@ function [] = main()
     configs.plotDifferences = 1;
 
     %% Call manager functions
-    manager(sourceList, rasAeroIILaunchSite, configs)
+    manager(sourceList, rasAeroIILaunchSite, configs, rocket)
 end
 
 
