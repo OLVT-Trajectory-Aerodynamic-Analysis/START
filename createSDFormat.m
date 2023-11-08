@@ -48,7 +48,7 @@
 % data.atmosphere.temperature
 % data.atmosphere.density
 
-function [processedData] = createSDFormat(data, rasAeroIILaunchSite)
+function [processedData] = createSDFormat(data, rasAeroIILaunchSite, rocket)
     if data.dataType == "RASAeroII"
         processedData = RasCSVToStd(data.filepath, rasAeroIILaunchSite);
     elseif data.dataType == "EasyMini"

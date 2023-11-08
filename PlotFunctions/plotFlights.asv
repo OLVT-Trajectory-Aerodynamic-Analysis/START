@@ -1,4 +1,4 @@
-function plotFlights(sourceList, config, rocket)
+function plotFlights(sourceList, config)
 % This function creates plots of the main data (altitude, tilt, vel,
 % accel, atm), the data collected from each sensor is overlayed into one plot 
 
@@ -16,7 +16,7 @@ figure('Name','Atmosphere','NumberTitle','off')
 hold on; grid on
 figure('Name','MaxQ','NumberTitle','off')
 hold on; grid on
-figure('Name', 'Drag', 'NumberTitle', 'off')
+figute('Name', 'Drag', 'NumberTitle', 'off')
 hold on; grid on;
 
 %% Create legendList
@@ -168,26 +168,11 @@ leg.Layout.Tile = 'north';
 % Here we only want to plot drag during coast phase, so cut after burntime
 % and after apogee
 
-
 figure(7);
 for i = 1:length(sourceList)
-   time = sourceList{1, i}.time;
-   altitude = sourceList{1, i}.position.altitude;
-   dragAccel = sourceList{1, i}.performance.dragAcc;
-
-   [~, iMaxAlt] = max(altitude);
-   iCoast = find(time > rocket.sustainerMotorBurnTime & time <= time(iMaxAlt));
-
-   plot(time(iCoast), dragAccel(iCoast))
-   hold on
+   
 end
-title('Drag Acceleration v Time')
-xlabel('Time [s]'); ylabel('Drag Acceleration [m s^-2]')
-grid on
-hold off
 
-leg = legend(legendList, 'Orientation', 'Horizontal');
-leg.Layout.Tile = 'north';
 
 config = config;
 end

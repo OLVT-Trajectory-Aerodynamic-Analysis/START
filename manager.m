@@ -24,7 +24,7 @@ function [] = manager(sourceList, rasAeroIILaunchSite, config, rocket)
     %% Deal with rocket parameters
     %Idk another function here. It needs to get thrust-time curve, and do a
     %bunch of stuff with that I think. For now ill just do this
-    rocket.motorBurnTime = 2;
+    rocket.sustainerMotorBurnTime = 2;
 
     %% Get raw data into SD format
     for sourceNum = 1:numSources
@@ -41,5 +41,5 @@ function [] = manager(sourceList, rasAeroIILaunchSite, config, rocket)
     % MaxQ), use plotFlights. It iterates through all the sensors and
     % overlays their data.
     % Assuming SourceList Austin's filtered structure:
-    plotFlights(filteredData, config)
+    plotFlights(filteredData, config, rocket)
 end

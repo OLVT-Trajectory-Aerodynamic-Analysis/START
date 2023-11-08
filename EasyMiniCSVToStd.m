@@ -48,13 +48,13 @@ function struct = EasyMiniCSVToStd(csv)
                                     ((struct.atmosphere.temperature) * 287.05);
 
     
-    aVector = [fixed(:,17); fixed(:,18); fixed(:,19)];  %Grab acceleration vector
+   aVector = [fixed(:,17), fixed(:,18), fixed(:,19)];  %Grab acceleration vector
 
-    g = [fixed(end,17); fixed(end,18); fixed(end,19)];  %Gravity vector is the last 
+    g = fixed(end,17:19);  %Gravity vector is the last 
                                                         % acceleration vector, because that 
                                                         % is when the rocket is on the ground
 
     aDragVector = aVector - g;                          % Assume acceleration is only made up 
                                                         % of gravity and drag
-    struct.performance.drag = vecnorm(aDragVector, 2, 2);
+    struct.performance.dragAcc = vecnorm(aDragVector, 2, 2);
     end

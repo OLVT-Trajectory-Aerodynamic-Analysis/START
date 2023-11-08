@@ -57,6 +57,6 @@ function struct = RasCSVToStd(csv, rasAeroIILaunchSite)
         struct.atmosphere.pressure, ...
         struct.atmosphere.density] = atmosisa(struct.position.altitude);
 
-    struct.performance.drag = fixed(:,10);
+    struct.performance.dragAcc = fixed(:,10);
 
     end
