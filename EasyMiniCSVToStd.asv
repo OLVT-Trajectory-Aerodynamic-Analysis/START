@@ -54,7 +54,6 @@ function struct = EasyMiniCSVToStd(csv)
                                                         % acceleration vector, because that 
                                                         % is when the rocket is on the ground
 
-    aDragVector = aVector - g;                          % Assume acceleration is only made up 
-                                                        % of gravity and drag
+    aDragVector = aVector - g;                          % 
     struct.performance.drag = vecnorm(aDragVector, 2, 2);
     end

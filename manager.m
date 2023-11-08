@@ -16,14 +16,19 @@
 %   There are currently no config variables.
 % 
 
-function [] = manager(sourceList, rasAeroIILaunchSite, config)
+function [] = manager(sourceList, rasAeroIILaunchSite, config, rocket)
     %% Initialize Variables
     numSources = length(sourceList);
     processedData = {};
 
+    %% Deal with rocket parameters
+    %Idk another function here. It needs to get thrust-time curve, and do a
+    %bunch of stuff with that I think. For now ill just do this
+    rocket.motorBurnTime = 2;
+
     %% Get raw data into SD format
     for sourceNum = 1:numSources
-        processedData{sourceNum} = createSDFormat(sourceList(sourceNum), rasAeroIILaunchSite);
+        processedData{sourceNum} = createSDFormat(sourceList(sourceNum), rasAeroIILaunchSite, rocket);
     end
 
     %%  Kalman filer
@@ -36,5 +41,5 @@ function [] = manager(sourceList, rasAeroIILaunchSite, config)
     % MaxQ), use plotFlights. It iterates through all the sensors and
     % overlays their data.
     % Assuming SourceList Austin's filtered structure:
-    plotFlights(filteredData)
+    plotFlights(filteredData, config)
 end

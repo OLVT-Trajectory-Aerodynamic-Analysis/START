@@ -1,4 +1,4 @@
-function plotFlights(sourceList)
+function plotFlights(sourceList, config)
 % This function creates plots of the main data (altitude, tilt, vel,
 % accel, atm), the data collected from each sensor is overlayed into one plot 
 
@@ -16,6 +16,8 @@ figure('Name','Atmosphere','NumberTitle','off')
 hold on; grid on
 figure('Name','MaxQ','NumberTitle','off')
 hold on; grid on
+figute('Name', 'Drag', 'NumberTitle', 'off')
+hold on; grid on;
 
 %% Create legendList
 legendList = strings(1, length(sourceList) );
@@ -125,7 +127,7 @@ leg = legend(legendList, 'Orientation', 'Horizontal');
 leg.Layout.Tile = 'north';
 
 
-    %% Max Q (Idk where to put this)
+%% Max Q
 figure(6)
 tiledlayout(1, 2);
 
@@ -162,5 +164,10 @@ hold off
 leg = legend(legendList, 'Orientation', 'Horizontal');
 leg.Layout.Tile = 'north';
 
+%% Drag plots
 
+
+
+
+config = config;
 end
