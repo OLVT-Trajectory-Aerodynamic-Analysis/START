@@ -22,7 +22,7 @@ hold on; grid on;
 %% Create legendList
 legendList = strings(1, length(sourceList) );
 for i = 1:length(sourceList)
-    legendList(1, i) = sourceList{1, i}.dataType;
+    legendList(1, i) = sourceList{1, i}.dataTitle;
 end
 
 

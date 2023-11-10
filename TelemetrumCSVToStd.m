@@ -1,4 +1,4 @@
-function struct = TelemetrumCSVToStd(csv)
+function struct = TelemetrumCSVToStd(csv, title)
     % usage: dataStructure = csvToStruct(csv)
     %
     % Converts data from a Telemetrum csv file to a standardized data structure
@@ -18,7 +18,8 @@ function struct = TelemetrumCSVToStd(csv)
     
     %% Operational Code:
     struct.dataType = "Telemetrum";
-    
+    struct.dataTitle = title;
+
     struct.time = fixed(:,5);                           % [s] 
     
     struct.position.magnitude = [];

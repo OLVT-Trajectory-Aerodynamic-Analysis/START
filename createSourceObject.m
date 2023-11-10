@@ -20,7 +20,7 @@
 %   added to it
 %
 
-function [source, sourceList] = createSourceObject(filepath, dataType, sourceType, sourceList)
+function [source, sourceList] = createSourceObject(filepath, dataType, sourceTitle, sourceList)
     source = struct;
 
     %Add checks here to all of these things
@@ -32,7 +32,7 @@ function [source, sourceList] = createSourceObject(filepath, dataType, sourceTyp
     source.dataType = dataType;
 
     % Is String, Is it an acceptable type?
-    source.sourceType = sourceType;
+    source.sourceTitle = sourceTitle;
 
     sourceList = [sourceList, source];
 end

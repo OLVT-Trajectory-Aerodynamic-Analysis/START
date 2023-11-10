@@ -18,13 +18,15 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Sources will be inputted using the createSourceObject method. Each source 
-% will have be inputted using its path location, source type, and either 
-% rawData or simulated source. Finally, the createSourceObject will include
-% a parameter for where the lists should be stored.
+% will have be inputted using its path location, source type, and its title.
+% Finally, the createSourceObject will include a parameter for where the 
+% lists should be stored.
+%
+% The title string is what it will be labeled as in and legenr
 %
 % For example 
-% [source1, sourceList] = createSourceObject("rawData/exampleFile", "easyMini", "rawData", sourceList);
-% [source2, sourceList] = createSourceObject("rawData/exampleFile2", "RASAeroII", "simulatedData", sourceList);
+% [~, sourceList] = createSourceObject("rawData/exampleFile", "easyMini", "EasyMini Data", sourceList);
+% [~, sourceList] = createSourceObject("rawData/exampleFile2", "RASAeroII", "RAS 0AoA", sourceList);
 %
 
 function [] = main()
@@ -34,10 +36,10 @@ function [] = main()
     configs = struct;
     
     %% Input Sources
-    [~, sourceList] = createSourceObject("rawData/Skipper1C/EasyMini", "EasyMini", "rawData", sourceList);
-    [~, sourceList] = createSourceObject("rawData/Skipper1C/Telemetrum-2023-10-15-serial-10923-flight-0003-via-7175", "Telemetrum", "rawData", sourceList);
-    [~, sourceList] = createSourceObject("rawData/Skipper1C/RasAeroII_Skipper1C_0AoA", "RASAeroII", "simulatedData", sourceList);
-    [~, sourceList] = createSourceObject("rawData/Skipper1C/RasAeroII_Skipper1C_5AoA", "RASAeroII", "simulatedData", sourceList);
+    %[~, sourceList] = createSourceObject("rawData/Skipper1C/EasyMini", "EasyMini", "rawData", sourceList);
+    [~, sourceList] = createSourceObject("rawData/Skipper1C/Telemetrum-2023-10-15-serial-10923-flight-0003-via-7175", "Telemetrum", "Telemetrum Data", sourceList);
+    [~, sourceList] = createSourceObject("rawData/Skipper1C/RasAeroII_Skipper1C_0AoA", "RASAeroII", "RAS 0AoA", sourceList);
+    [~, sourceList] = createSourceObject("rawData/Skipper1C/RasAeroII_Skipper1C_5AoA", "RASAeroII", "RAS 5AoA", sourceList);
 
     %% Ras Aero II Launch Site Configurations
     rasAeroIILaunchSite = struct;
