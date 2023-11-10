@@ -17,6 +17,7 @@
 % 
 
 function [] = manager(sourceList, rasAeroIILaunchSite, config, rocket)
+    
     %% Initialize Variables
     numSources = length(sourceList);
     processedData = {};
@@ -33,7 +34,6 @@ function [] = manager(sourceList, rasAeroIILaunchSite, config, rocket)
     filteredData = filterData(processedData);
 
     %% Call plotting functions
-    addpath(genpath(pwd)) % adds all subfolders of Current Folder into MATLAB Path
 
     % To output just the main things (altitude, tilt, vel, accel, atm,
     % MaxQ), use plotFlights. It iterates through all the sensors and

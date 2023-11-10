@@ -31,6 +31,7 @@
 
 function [] = main()
     close all
+    addpath(genpath(pwd)) % adds all subfolders of Current Folder into MATLAB Path
     % Initialize Variables
     sourceList = [];
     configs = struct;
