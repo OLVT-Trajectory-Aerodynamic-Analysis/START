@@ -12,6 +12,8 @@ function struct = RasCSVToStd(csv, title, rasAeroIILaunchSite)
     %% Contributors:
     %  @author Austin Zary
     %  @created 10/03/2023
+    %
+    %  @editor Michael Plano
     % 
     %% Parsing Input:
     fixed = StandardTime(csv,1);

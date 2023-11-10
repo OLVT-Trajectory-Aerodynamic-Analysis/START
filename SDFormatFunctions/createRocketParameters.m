@@ -1,3 +1,5 @@
+% This function gets the rocket parameters from the data given. It does
+
 function [rocket] = createRocketParameters(rocket)
     %%
     boosterWeight = 0;

@@ -1,3 +1,11 @@
+% This function gives you all the important parameters you need from the
+% motor inputted
+
+% Contributors
+% @author Michael Plano
+% @created 11/2023
+% 
+
 function [rocket] = createRocketParameters(rocket)
     %%
     boosterWeight = 0;
@@ -23,9 +31,9 @@ function [rocket] = createRocketParameters(rocket)
     sustainerBurnTimePattern = 'Burn Time.*?(\d+.\d+)\s*s';
     sustainerBurnTimeTokens = regexp(webpage, sustainerBurnTimePattern, 'tokens');
     sustainerBurnTime = str2double(sustainerBurnTimeTokens{1});
-    
-    rocket.sustainerMotorWeight = sustainerWeight;
-    rocket.sustainerMotorPropWeight = sustainerPropWeight * 0.00220462;
+
+    rocket.sustainerMotorWeight = sustainerWeight / 1000;
+    rocket.sustainerMotorPropWeight = sustainerPropWeight / 1000;
     rocket.sustainerMotorBurnTime = sustainerBurnTime;
 
     rocket.sustainerWeight = rocket.sustainerUnloadedWeight + rocket.sustainerMotorWeight;
@@ -52,8 +60,8 @@ function [rocket] = createRocketParameters(rocket)
         boosterBurnTimeTokens = regexp(webpage, boosterBurnTimePattern, 'tokens');
         boosterBurnTime = str2double(boosterBurnTimeTokens{1});
         
-        rocket.boosterMotorWeight = boosterTotalWeight;
-        rocket.boosterMotorPropWeight = boosterPropWeight;
+        rocket.boosterMotorWeight = boosterTotalWeight / 1000;
+        rocket.boosterMotorPropWeight = boosterPropWeight / 1000;
         rocket.boosterMotorBurnTime = boosterBurnTime;
 
         boosterWeight = rocket.boosterMotorWeight + rocket.totalUnloadedWeight;

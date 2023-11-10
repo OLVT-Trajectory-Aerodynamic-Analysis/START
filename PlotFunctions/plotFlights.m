@@ -1,3 +1,12 @@
+% This is the file that handles all of the ploitting functionality, for now
+% at least
+% 
+% Contributors
+% @author Michael Plano
+% @author Hady Solimany
+% @created 09/25/2023
+% 
+
 function plotFlights(sourceList, config, rocket)
 % This function creates plots of the main data (altitude, tilt, vel,
 % accel, atm), the data collected from each sensor is overlayed into one plot 
