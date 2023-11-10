@@ -22,9 +22,7 @@ function [] = manager(sourceList, rasAeroIILaunchSite, config, rocket)
     processedData = {};
 
     %% Deal with rocket parameters
-    %Idk another function here. It needs to get thrust-time curve, and do a
-    %bunch of stuff with that I think. For now ill just do this
-    rocket.sustainerMotorBurnTime = 2;
+    rocket = createRocketParameters(rocket);
 
     %% Get raw data into SD format
     for sourceNum = 1:numSources

@@ -185,9 +185,10 @@ title('Drag Acceleration v Time')
 xlabel('Time [s]'); ylabel('Drag Acceleration [m s^-2]')
 grid on
 hold off
+xlim([0 inf])
 
-leg = legend(legendList, 'Orientation', 'Horizontal');
-leg.Layout.Tile = 'north';
+legend(legendList)
+
 
 config = config;
 end

@@ -47,14 +47,5 @@ function struct = EasyMiniCSVToStd(csv)
     struct.atmosphere.density = struct.atmosphere.pressure/...
                                     ((struct.atmosphere.temperature) * 287.05);
 
-    
-   aVector = [fixed(:,17), fixed(:,18), fixed(:,19)];  %Grab acceleration vector
-
-    g = fixed(end,17:19);  %Gravity vector is the last 
-                                                        % acceleration vector, because that 
-                                                        % is when the rocket is on the ground
-
-    aDragVector = aVector - g;                          % Assume acceleration is only made up 
-                                                        % of gravity and drag
-    struct.performance.dragAcc = vecnorm(aDragVector, 2, 2);
+    struct.performance.dragAcc = calculateDragAcceleration(struct);
     end

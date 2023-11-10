@@ -47,13 +47,5 @@ function struct = TelemetrumCSVToStd(csv)
     struct.atmosphere.density = ...
         struct.atmosphere.pressure ./ (287.1 * struct.atmosphere.temperature);
 
-    aVector = [fixed(:,17), fixed(:,18), fixed(:,19)];  %Grab acceleration vector
-
-    g = fixed(end,17:19);  %Gravity vector is the last 
-                                                        % acceleration vector, because that 
-                                                        % is when the rocket is on the ground
-
-    aDragVector = aVector - g;                          % Assume acceleration is only made up 
-                                                        % of gravity and drag
-    struct.performance.dragAcc = vecnorm(aDragVector, 2, 2);
+    struct.performance.dragAcc = calculateDragAcceleration(struct);
     end
