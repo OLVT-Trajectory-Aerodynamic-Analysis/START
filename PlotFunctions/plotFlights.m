@@ -67,7 +67,7 @@ figure(3)
 for i = 1:length(sourceList)
     time = sourceList{1, i}.time;
     aMag = sourceList{1, i}.acceleration.magnitude;
-    plot(time, aMag)
+    plot(time, abs(aMag))
     hold on
 end
 title('Acceleration')
