@@ -9,10 +9,9 @@
 
 % @param filepath is the location of the data on your local machine
 % @param dataType tells the system what kind of data it is. The options are
-%   currently either "simulatedData" or "rawData"
-% @param sourceType is the type of format the data is in, this most likely
-%   depends on where the source was recived from. The options are "EZMini",
-%   "Telemetrum", "AIM", "RASAeroII", "ASTOS"
+%   currently either "EZMini", "Telemetrum", "AIM", "RASAeroII", "ASTOS"
+% @param sourceTitle is the title of the source that the user would like to
+%   appear in the legend of any plots
 % @param sourceList is a list of sources that the current source needs to
 %   be added to
 % @returns source is the new source datatype in struct form
