@@ -16,25 +16,28 @@
 %   There are currently no config variables.
 % 
 
-function [] = manager(sourceList, rasAeroIILaunchSite, config)
+function [] = manager(sourceList, rasAeroIILaunchSite, config, rocket)
+    
     %% Initialize Variables
     numSources = length(sourceList);
     processedData = {};
 
+    %% Deal with rocket parameters
+    rocket = createRocketParameters(rocket);
+
     %% Get raw data into SD format
     for sourceNum = 1:numSources
-        processedData{sourceNum} = createSDFormat(sourceList(sourceNum), rasAeroIILaunchSite);
+        processedData{sourceNum} = createSDFormat(sourceList(sourceNum), rasAeroIILaunchSite, rocket);
     end
 
     %%  Kalman filer
     filteredData = filterData(processedData);
 
     %% Call plotting functions
-    addpath(genpath(pwd)) % adds all subfolders of Current Folder into MATLAB Path
 
     % To output just the main things (altitude, tilt, vel, accel, atm,
     % MaxQ), use plotFlights. It iterates through all the sensors and
     % overlays their data.
     % Assuming SourceList Austin's filtered structure:
-    plotFlights(filteredData)
+    plotFlights(filteredData, config, rocket)
 end

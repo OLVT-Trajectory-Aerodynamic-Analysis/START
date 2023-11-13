@@ -1,4 +1,4 @@
-function struct = RasCSVToStd(csv, rasAeroIILaunchSite)
+function struct = RasCSVToStd(csv, title, rasAeroIILaunchSite)
     % usage: dataStructure = csvToStruct(csv)
     %
     % Converts data from a RASAeroII csv file to a standardized data structure
@@ -12,6 +12,8 @@ function struct = RasCSVToStd(csv, rasAeroIILaunchSite)
     %% Contributors:
     %  @author Austin Zary
     %  @created 10/03/2023
+    %
+    %  @editor Michael Plano
     % 
     %% Parsing Input:
     fixed = StandardTime(csv,1);
@@ -28,7 +30,8 @@ function struct = RasCSVToStd(csv, rasAeroIILaunchSite)
 
     %% Operational Code:
     struct.dataType = "RasAeroII";
-    
+    struct.dataTitle = title;
+
     struct.time = fixed(:,1);
     
     struct.position.magnitude = sqrt((fixed(:,23)).^2 + (fixed(:,24).^2)) * 0.3048; % [m]
@@ -56,5 +59,7 @@ function struct = RasCSVToStd(csv, rasAeroIILaunchSite)
     [struct.atmosphere.temperature,~, ...
         struct.atmosphere.pressure, ...
         struct.atmosphere.density] = atmosisa(struct.position.altitude);
+
+    struct.performance.dragAcc = fixed(:,10);
 
     end

@@ -1,4 +1,4 @@
-function struct = TelemetrumCSVToStd(csv)
+function struct = TelemetrumCSVToStd(csv, title)
     % usage: dataStructure = csvToStruct(csv)
     %
     % Converts data from a Telemetrum csv file to a standardized data structure
@@ -18,14 +18,15 @@ function struct = TelemetrumCSVToStd(csv)
     
     %% Operational Code:
     struct.dataType = "Telemetrum";
-    
+    struct.dataTitle = title;
+
     struct.time = fixed(:,5);                           % [s] 
     
     struct.position.magnitude = [];
-    struct.position.altitude = fixed(:,13);             % [m]
+    struct.position.altitude = fixed(:,12);             % [m]
     struct.position.Xposition = [];
     struct.position.Yposition = [];
-    struct.position.Zposition = fixed(:,12);            % [m]
+    struct.position.Zposition = fixed(:,13);            % [m]
     
     struct.velocity.magnitude = fixed(:,14);            % [m/s]
     struct.velocity.Xvelocity = []; 
@@ -37,12 +38,15 @@ function struct = TelemetrumCSVToStd(csv)
     struct.acceleration.Zacceleration = fixed(:,21);    % [m/s^2]
     struct.acceleration.magnitude = fixed(:,10);         % [m/s^2]
 
-    struct.gyro.roll = fixed(:,22);                     % []
-    struct.gyro.pitch = fixed(:,23);                    % []
-    struct.gyro.yaw = fixed(:,24);                      % []
-    struct.gyro.tilt = fixed(:,28);                     % []
+    struct.gyro.roll = fixed(:,22);                     % [degrees]
+    struct.gyro.pitch = fixed(:,23);                    % [degrees]
+    struct.gyro.yaw = fixed(:,24);                      % [degrees]
+    struct.gyro.tilt = fixed(:,28);                     % [degrees]
     
-    struct.atmosphere.pressure = fixed(:,9);            % [Pa]
-    struct.atmosphere.temperature = fixed(:,13);        % [C]
-    struct.atmosphere.density = [];
+    struct.atmosphere.pressure = fixed(:,11);            % [Pa]
+    struct.atmosphere.temperature = fixed(:,15) + 273.15;        % [K]
+    struct.atmosphere.density = ...
+        struct.atmosphere.pressure ./ (287.1 * struct.atmosphere.temperature);
+
+    struct.performance.dragAcc = calculateDragAcceleration(struct);
     end

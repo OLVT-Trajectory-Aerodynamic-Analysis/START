@@ -1,4 +1,4 @@
-function struct = EasyMiniCSVToStd(csv)
+function struct = EasyMiniCSVToStd(csv, title)
     % usage: dataStructure = csvToStruct(csv)
     %
     % Converts data from a EasyMini csv file to a standardized data structure
@@ -18,7 +18,8 @@ function struct = EasyMiniCSVToStd(csv)
     
     %% Operational Code:
     struct.dataType = "EasyMini";
-    
+    struct.dataTitle = title;
+
     struct.time = fixed(:,5);                           % [s] 
     
     %struct.position.magnitude = null;
@@ -46,4 +47,6 @@ function struct = EasyMiniCSVToStd(csv)
     struct.atmosphere.temperature = fixed(:,13)+273.15; % [C]
     struct.atmosphere.density = struct.atmosphere.pressure/...
                                     ((struct.atmosphere.temperature) * 287.05);
+
+    struct.performance.dragAcc = calculateDragAcceleration(struct);
     end
