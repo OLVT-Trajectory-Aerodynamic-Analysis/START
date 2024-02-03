@@ -17,7 +17,6 @@
 % 
 
 function [] = manager(sourceList, rasAeroIILaunchSite, config, rocket)
-    
     %% Initialize Variables
     numSources = length(sourceList);
     processedData = {};

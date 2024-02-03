@@ -7,7 +7,7 @@
 % 
 
 function [rocket] = createRocketParameters(rocket)
-    %%
+    %% This is to fix a null error
     boosterWeight = 0;
     boosterPropWeight = 0;
     boosterBurnTime = 0;

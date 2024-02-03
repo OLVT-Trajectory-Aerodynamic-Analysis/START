@@ -55,6 +55,8 @@ function [processedData] = createSDFormat(data, rasAeroIILaunchSite, ~)
         processedData = EasyMiniCSVToStd(data.filepath, data.sourceTitle);
     elseif data.dataType == "Telemetrum"
         processedData = TelemetrumCSVToStd(data.filepath, data.sourceTitle);
+    elseif data.dataTyle == "BlueRaven"
+        processedData = BlueRavenCSVToSD(data.filepath, data.sourceTitle);
     else
         msg = "The data type inputted does not match any existing" + ...
             "dataTypes.";

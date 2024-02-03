@@ -7,9 +7,12 @@
 % @created 09/25/2023
 % 
 
-function Copy_of_plotFlights(sourceList, config, rocket)
+function plotFlights(sourceList, config, rocket)
 % This function creates plots of the main data (altitude, tilt, vel,
 % accel, atm), the data collected from each sensor is overlayed into one plot 
+
+set(0, 'DefaultAxesFontSize', 18);
+set(0, 'DefaultAxesFontName', 'Times New Roman');
 
 % Initialize the Figures
 fig1 = figure('WindowStyle', 'docked');

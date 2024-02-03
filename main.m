@@ -21,7 +21,7 @@
 % Finally, the createSourceObject will include a parameter for where the 
 % lists should be stored.
 %
-% The title string is what it will be labeled as in and legenr
+% The title string is what it will be labeled as in and legend
 %
 % For example 
 % [~, sourceList] = createSourceObject("rawData/exampleFile", "easyMini", "EasyMini Data", sourceList);
@@ -29,6 +29,7 @@
 %
 
 function [] = main()
+    %% Most users shouldn't touch this
     close all
     addpath(genpath(pwd)) % adds all subfolders of Current Folder into MATLAB Path
     % Initialize Variables
@@ -52,14 +53,14 @@ function [] = main()
     [~, sourceList] = createSourceObject( ...
         "rawData/Skipper1C/RasAeroII_Skipper1C_0AoA", ...
         "RASAeroII", ...
-        "RAS 0AoA", ...
+        "RAS 0 degree Launch Angle", ...
         sourceList);
-
     [~, sourceList] = createSourceObject( ...
         "rawData/Skipper1C/RasAeroII_Skipper1C_5AoA", ...
         "RASAeroII", ...
-        "RAS 5AoA", ...
+        "RAS 5 degree Launch Angle", ...
         sourceList);
+
 
     %% Ras Aero II Launch Site Configurations
     rasAeroIILaunchSite = struct;
