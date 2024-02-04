@@ -29,6 +29,7 @@
 %
 
 function [] = main()
+    disp("Running ...")
     %% Most users shouldn't touch this
     close all
     addpath(genpath(pwd)) % adds all subfolders of Current Folder into MATLAB Path
@@ -87,6 +88,7 @@ function [] = main()
 
     %% Call manager functions
     manager(sourceList, rasAeroIILaunchSite, configs, rocket)
+    disp("Complete!!")
 end
 
 
