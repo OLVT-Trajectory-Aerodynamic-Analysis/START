@@ -7,100 +7,87 @@
 % @created 09/25/2023
 % 
 
-function plotFlights(sourceList, config, rocket)
+function plotAllSources(sourceList, config, rocket)
 % This function creates plots of the main data (altitude, tilt, vel,
 % accel, atm), the data collected from each sensor is overlayed into one plot 
 
 set(0, 'DefaultAxesFontSize', 18);
 set(0, 'DefaultAxesFontName', 'Times New Roman');
-
-% Initialize the Figures
-fig1 = figure('WindowStyle', 'docked');
-set(fig1, 'Name', 'Skipper1C Data')
-
-tabgroup = uitabgroup(fig1);
-
-tab1 = uitab(tabgroup, 'Title', 'Height');
-tab2 = uitab(tabgroup, 'Title', 'Velocity');
-tab3 = uitab(tabgroup, 'Title', 'Acceleration');
-tab4 = uitab(tabgroup, 'Title', 'Tilt');
-tab5 = uitab(tabgroup, 'Title', 'Atmosphere');
-tab6 = uitab(tabgroup, 'Title', 'MaxQ');
-tab7 = uitab(tabgroup, 'Title', 'Drag Acceleration');
-
-%% Create legendList
-legendList = strings(1, length(sourceList) );
-for i = 1:length(sourceList)
-    legendList(1, i) = sourceList{1, i}.dataTitle;
-end
-
+set(0,'DefaultFigureWindowStyle','docked')
 
 
 %% Graph Positions
-ax = axes('Parent', tab1);
+fig1 = figure(1);
+fig1.Name = "Height";
 for i = 1:length(sourceList)
     time = sourceList{1, i}.time;
     altitude = sourceList{1, i}.position.Zposition;
-    plot(ax, time, altitude)
+    plot(time, altitude, 'DisplayName', sourceList{1, i}.dataTitle)
     hold on
 end
 title('Height')
 xlabel('Time [s]'); ylabel('Height above launchpad [m]')
-legend(legendList)
+legend('Location', 'best')
 grid on
 grid minor
 hold off
 
 %% Graph Velocities
-ax = axes('Parent', tab2);
+fig2 = figure(2);
+fig2.Name = "Velocity";
 for i = 1:length(sourceList)
     time = sourceList{1, i}.time;
     vMag = sourceList{1, i}.velocity.magnitude;
-    plot(ax, time, vMag)
+    plot(time, vMag, 'DisplayName', sourceList{1, i}.dataTitle)
     hold on
 end
 title('Velocity')
 xlabel('Time [s]'); ylabel('Velocity [m s^-1]')
-legend(legendList)
+legend('Location', 'best')
 grid on
 grid minor
 hold off
 
 %% Graph Acceleration
-ax = axes('Parent', tab3);
+fig3 = figure(3);
+fig3.Name = "Acceleration";
 for i = 1:length(sourceList)
     time = sourceList{1, i}.time;
     aMag = sourceList{1, i}.acceleration.magnitude;
-    plot(ax, time, abs(aMag))
+    plot(time, abs(aMag), 'DisplayName', sourceList{1, i}.dataTitle)
     hold on
 end
 title('Acceleration')
 xlabel('Time [s]'); ylabel('Acceleration [m s^-2]')
-legend(legendList)
+legend('Location', 'best')
 grid on
 grid minor
 hold off
 
 %% Graph Gyro
-ax = axes('Parent', tab4);
+fig4 = figure(4);
+fig4.Name = "Tilt";
 for i = 1:length(sourceList)
     time = sourceList{1, i}.time;
     tilt = sourceList{1, i}.gyro.tilt;
     if tilt(1) ~= 361
         %Gyro plots
-        plot(ax, time, tilt)
+        plot(time, tilt, 'DisplayName', sourceList{1, i}.dataTitle)
         hold on
         
     end
 end
 title('Tilt')
 xlabel('Time (s)'); ylabel('angle [degrees]')
-legend(legendList)
+legend('Location', 'best')
 grid on
 grid minor
 hold off
 %% Graph Atmosphere
-tlayout1 = tiledlayout(3, 1, 'Parent', tab5);
+
+fig5 = figure(5);
+fig5.Name = "Atmosphere";
+tlayout1 = tiledlayout(3, 1, 'Parent', fig5);
 
 % Pressure
 ax = nexttile(tlayout1);
@@ -143,12 +130,12 @@ xlabel('Time [s]'); ylabel('Density [kg m^-3]')
 grid on
 hold off
 
-leg = legend(legendList, 'Orientation', 'Horizontal');
-leg.Layout.Tile = 'north';
-
 
 %% Max Q
-tlayout2 = tiledlayout(1, 2, 'Parent', tab6);
+fig6 = figure(6);
+fig6.Name = "MaxQ";
+
+tlayout2 = tiledlayout(1, 2, 'Parent', fig6);
 
 ax1 = nexttile(tlayout2);
 for i = 1:length(sourceList)
@@ -180,15 +167,14 @@ xlabel('Altitude [m]'); ylabel('Dynamic Pressure [Pa]')
 grid on
 hold off
 
-leg = legend(legendList, 'Orientation', 'Horizontal');
-leg.Layout.Tile = 'north';
 
 %% Drag plots
 % Here we only want to plot drag during coast phase, so cut after burntime
 % and after apogee
 
 
-ax = axes('Parent', tab7);
+fig7 = figure(7);
+fig7.Name = "Drag";
 for i = 1:length(sourceList)
     if sourceList{1, i}.performance.dragAcc(1) ~= 1e10
         time = sourceList{1, i}.time;
@@ -198,18 +184,16 @@ for i = 1:length(sourceList)
         [~, iMaxAlt] = max(altitude);
         iCoast = find(time > rocket.sustainerMotorBurnTime & time <= time(iMaxAlt));
     
-        plot(ax, time(iCoast), dragAccel(iCoast))
+        plot(time(iCoast), dragAccel(iCoast), 'DisplayName', sourceList{1, i}.dataTitle)
         hold on
     end
 end
 title('Drag Acceleration v Time')
 xlabel('Time [s]'); ylabel('Drag Acceleration [m s^-2]')
+legend('Location', 'best')
 grid on
 hold off
 xlim([0 inf])
-
-legend(legendList)
-
 
 config = config;
 end

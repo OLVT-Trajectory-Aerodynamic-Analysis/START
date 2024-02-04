@@ -1,7 +1,13 @@
-% This function gets the rocket parameters from the data given. It does
+% This function gives you all the important parameters you need from the
+% motor inputted
+
+% Contributors
+% @author Michael Plano
+% @created 11/2023
+% 
 
 function [rocket] = createRocketParameters(rocket)
-    %%
+    %% This is to fix a null error
     boosterWeight = 0;
     boosterPropWeight = 0;
     boosterBurnTime = 0;

@@ -17,7 +17,6 @@
 % 
 
 function [] = manager(sourceList, rasAeroIILaunchSite, config, rocket)
-    
     %% Initialize Variables
     numSources = length(sourceList);
     processedData = {};
@@ -26,18 +25,21 @@ function [] = manager(sourceList, rasAeroIILaunchSite, config, rocket)
     rocket = createRocketParameters(rocket);
 
     %% Get raw data into SD format
+    disp("Processing data ...")
     for sourceNum = 1:numSources
         processedData{sourceNum} = createSDFormat(sourceList(sourceNum), rasAeroIILaunchSite, rocket);
     end
 
     %%  Kalman filer
+    disp("Filtering data ...")
     filteredData = filterData(processedData);
 
     %% Call plotting functions
 
     % To output just the main things (altitude, tilt, vel, accel, atm,
-    % MaxQ), use plotFlights. It iterates through all the sensors and
+    % MaxQ), use plotAllSources. It iterates through all the sensors and
     % overlays their data.
     % Assuming SourceList Austin's filtered structure:
-    plotFlights(filteredData, config, rocket)
+    disp("Plotting Data ...")
+    plotAllSources(filteredData, config, rocket)
 end

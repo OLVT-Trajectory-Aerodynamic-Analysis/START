@@ -21,7 +21,7 @@
 % Finally, the createSourceObject will include a parameter for where the 
 % lists should be stored.
 %
-% The title string is what it will be labeled as in and legenr
+% The title string is what it will be labeled as in and legend
 %
 % For example 
 % [~, sourceList] = createSourceObject("rawData/exampleFile", "easyMini", "EasyMini Data", sourceList);
@@ -29,6 +29,8 @@
 %
 
 function [] = main()
+    disp("Running ...")
+    %% Most users shouldn't touch this
     close all
     addpath(genpath(pwd)) % adds all subfolders of Current Folder into MATLAB Path
     % Initialize Variables
@@ -36,7 +38,6 @@ function [] = main()
     configs = struct;
     
     %% Input Sources
-    %[~, sourceList] = createSourceObject("rawData/Skipper1C/EasyMini", "EasyMini", "rawData", sourceList);
     
     [~, sourceList] = createSourceObject( ...
         "rawData/Skipper1C/Telemetrum-2023-10-15-serial-10923-flight-0003-via-7175", ...
@@ -45,16 +46,22 @@ function [] = main()
         sourceList);
 
     [~, sourceList] = createSourceObject( ...
-        "rawData/Skipper1C/RasAeroII_Skipper1C_0AoA", ...
-        "RASAeroII", ...
-        "RAS 0AoA", ...
+        "rawData/Skipper1C/Skipper 1-C-Easy Mini 2023-10-24-serial-7915-flight-0001", ...
+        "EasyMini", ...
+        "EasyMini Data", ...
         sourceList);
 
     [~, sourceList] = createSourceObject( ...
+        "rawData/Skipper1C/RasAeroII_Skipper1C_0AoA", ...
+        "RASAeroII", ...
+        "RAS 0 degree Launch Angle", ...
+        sourceList);
+    [~, sourceList] = createSourceObject( ...
         "rawData/Skipper1C/RasAeroII_Skipper1C_5AoA", ...
         "RASAeroII", ...
-        "RAS 5AoA", ...
+        "RAS 5 degree Launch Angle", ...
         sourceList);
+
 
     %% Ras Aero II Launch Site Configurations
     rasAeroIILaunchSite = struct;
@@ -81,6 +88,7 @@ function [] = main()
 
     %% Call manager functions
     manager(sourceList, rasAeroIILaunchSite, configs, rocket)
+    disp("Complete!!")
 end
 
 
