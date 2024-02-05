@@ -83,12 +83,18 @@ function [] = main()
 
     %% Define Configurable Parameters
     configs.plotDataSources = struct;
+
+    % If you want all data sources
     configs.plotDataSources.Plot = 1;
+    configs.plotDataSources.SingleFigure = false: % Not Recommended, slow and not updated
     configs.plotDataSources.rocketPhaseLines = true;
     configs.plotDataSources.onlyViewAscent = true;
 
-
-    configs.plotFilteredData = 0;
+    % If you want only filtered raw Data
+    configs.plotFilteredData.Plot = 0;
+    configs.plotFilteredData.SingleFigure = false: % Not Recommended, slow and not updated
+    configs.plotFilteredData.rocketPhaseLines = true;
+    configs.plotFilteredData.onlyViewAscent = true;
 
     %% Call manager functions
     manager(sourceList, rasAeroIILaunchSite, configs, rocket)

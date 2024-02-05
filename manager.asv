@@ -50,6 +50,6 @@ function [] = manager(sourceList, rasAeroIILaunchSite, config, rocket)
 
     % Plot Filtered Data here
     if (configs.plotFilteredData.Plot)
-        disp("Add some plotting stuff here ...")
+           
     end
 end
