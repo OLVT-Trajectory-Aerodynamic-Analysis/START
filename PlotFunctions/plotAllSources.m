@@ -7,7 +7,7 @@
 % @created 09/25/2023
 % 
 
-function plotAllSources(sourceList, config, rocket)
+function plotAllSources(sourceList, configs, rocket)
 % This function creates plots of the main data (altitude, tilt, vel,
 % accel, atm), the data collected from each sensor is overlayed into one plot 
 
@@ -25,8 +25,10 @@ for i = 1:length(sourceList)
     plot(time, altitude, 'DisplayName', sourceList{1, i}.dataTitle)
     hold on
 end
-title('Height')
-xlabel('Time [s]'); ylabel('Height above launchpad [m]')
+plotXlines(configs.plotDataSources,  rocket, fig1)
+trimAxis(configs.plotDataSources, sourceList{1, 1})
+title("Height AGL", 'FontName', 'Times New Roman', 'FontSize', 18)
+xlabel('Time [s]'); ylabel('Height AGL [m]')
 legend('Location', 'best')
 grid on
 grid minor
@@ -41,7 +43,9 @@ for i = 1:length(sourceList)
     plot(time, vMag, 'DisplayName', sourceList{1, i}.dataTitle)
     hold on
 end
-title('Velocity')
+plotXlines(configs.plotDataSources,  rocket, fig1)
+trimAxis(configs.plotDataSources, sourceList{1, 1})
+title('Velocity', 'FontName', 'Times New Roman', 'FontSize', 18)
 xlabel('Time [s]'); ylabel('Velocity [m s^-1]')
 legend('Location', 'best')
 grid on
@@ -57,7 +61,9 @@ for i = 1:length(sourceList)
     plot(time, abs(aMag), 'DisplayName', sourceList{1, i}.dataTitle)
     hold on
 end
-title('Acceleration')
+plotXlines(configs.plotDataSources,  rocket, fig1)
+trimAxis(configs.plotDataSources, sourceList{1, 1})
+title('Acceleration', 'FontName', 'Times New Roman', 'FontSize', 18)
 xlabel('Time [s]'); ylabel('Acceleration [m s^-2]')
 legend('Location', 'best')
 grid on
@@ -77,7 +83,10 @@ for i = 1:length(sourceList)
         
     end
 end
-title('Tilt')
+plotXlines(configs.plotDataSources,  rocket, fig1)
+trimAxis(configs.plotDataSources, sourceList{1, 1})
+ylim([-5, 95])
+title('Tilt', 'FontName', 'Times New Roman', 'FontSize', 18)
 xlabel('Time (s)'); ylabel('angle [degrees]')
 legend('Location', 'best')
 grid on
@@ -99,6 +108,7 @@ for i = 1:length(sourceList)
     hold on
 end
 xlabel('Time [s]'); ylabel('Pressure [Pa]')
+title("Pressure", 'FontName', 'Times New Roman', 'FontSize', 18)
 grid on
 hold off
 
@@ -113,6 +123,7 @@ for i = 1:length(sourceList)
     hold on
 end
 xlabel('Time [s]'); ylabel('Temperature [K]')
+title("Temperature", 'FontName', 'Times New Roman', 'FontSize', 18)
 grid on
 hold off
 
@@ -127,6 +138,7 @@ for i = 1:length(sourceList)
     hold on
 end
 xlabel('Time [s]'); ylabel('Density [kg m^-3]')
+title("Density", 'FontName', 'Times New Roman', 'FontSize', 18)
 grid on
 hold off
 
@@ -147,7 +159,7 @@ for i = 1:length(sourceList)
     plot(ax1, time, dynamicPressure)
     hold on
 end
-title('MaxQ v Time')
+title('MaxQ v Time', 'FontName', 'Times New Roman', 'FontSize', 18)
 xlabel('Time [s]'); ylabel('Dynamic Pressure [Pa]')
 grid on
 hold off
@@ -162,7 +174,7 @@ for i = 1:length(sourceList)
     plot(ax2, altitude, dynamicPressure)
     hold on
 end
-title('MaxQ v altitude')
+title('MaxQ v altitude', 'FontName', 'Times New Roman', 'FontSize', 18)
 xlabel('Altitude [m]'); ylabel('Dynamic Pressure [Pa]')
 grid on
 hold off
@@ -188,12 +200,11 @@ for i = 1:length(sourceList)
         hold on
     end
 end
-title('Drag Acceleration v Time')
+title('Drag Acceleration', 'FontName', 'Times New Roman', 'FontSize', 18)
 xlabel('Time [s]'); ylabel('Drag Acceleration [m s^-2]')
 legend('Location', 'best')
 grid on
 hold off
 xlim([0 inf])
 
-config = config;
 end

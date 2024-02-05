@@ -78,17 +78,11 @@ function [] = main()
     rocket.totalUnloadedMass = -1;       % (kg)
     rocket.sustainerMotor = "J460T";
     rocket.boosterMotor = "null";
-    rocket.separationDelay = 0.7;
-    rocket.ignitionDelay = 2.5;
 
     %% Define Configurable Parameters
-    configs.plotDataSources = struct;
-    configs.plotDataSources.Plot = 1;
-    configs.plotDataSources.rocketPhaseLines = true;
-    configs.plotDataSources.onlyViewAscent = true;
-
-
-    configs.plotFilteredData = 0;
+    configs.plotDataSources = 1;
+    configs.plotDataSources.rocketPhaseLines = 1;
+    configs.plotFilteredData = 1;
 
     %% Call manager functions
     manager(sourceList, rasAeroIILaunchSite, configs, rocket)

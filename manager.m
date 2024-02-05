@@ -40,6 +40,8 @@ function [] = manager(sourceList, rasAeroIILaunchSite, config, rocket)
     % MaxQ), use plotAllSources. It iterates through all the sensors and
     % overlays their data.
     % Assuming SourceList Austin's filtered structure:
-    disp("Plotting Data ...")
-    plotAllSources(filteredData, config, rocket)
+    if (config.plotDataSources.Plot == 1)
+        disp("Plotting All Sources of Data ...")
+        plotAllSources(filteredData, config, rocket)
+    end
 end
