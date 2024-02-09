@@ -16,17 +16,17 @@ function [] = plotXlines(configs, rocket, fig1)
         %% Plot the line at Motor Burnout, Separation, and ignition
         hold on
         name1 = "Motor Burnout: " + num2str(rocket.sustainerMotorBurnTime) + " s";
-        xline(rocket.sustainerMotorBurnTime, ...
-            'Color', 'black', 'LineWidth', 2, 'DisplayName', name1)
+        xline(rocket.sustainerMotorBurnTime, '-',...
+            'Motor Burnout', 'Color', 'black', 'LineWidth', 3, 'DisplayName', name1)
         
         hold on
         name2 = "Stage Separation: " + num2str(rocket.sustainerMotorBurnTime + rocket.separationDelay) + " s";
-        xline(rocket.sustainerMotorBurnTime + rocket.separationDelay, ...
-            'Color', 'blue', 'LineWidth', 2, 'DisplayName', name2)
+        xline(rocket.sustainerMotorBurnTime + rocket.separationDelay, '--',...
+            'Stage Separation', 'Color', 'black', 'LineWidth', 3, 'DisplayName', name2)
        
         hold on
         name3 = "Sustainer Ignition: " + num2str(rocket.sustainerMotorBurnTime + rocket.separationDelay + rocket.ignitionDelay) + " s";
-        xline(rocket.sustainerMotorBurnTime + rocket.separationDelay + rocket.ignitionDelay, ...
-            'Color', 'red', 'LineWidth', 2, 'DisplayName', name3)
+        xline(rocket.sustainerMotorBurnTime + rocket.separationDelay + rocket.ignitionDelay, ':' ,...
+            'Sustainer Ignition', 'Color', 'black', 'LineWidth', 3, 'DisplayName', name3)
     end
 end

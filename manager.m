@@ -41,7 +41,7 @@ function [] = manager(sourceList, rasAeroIILaunchSite, config, rocket)
     % the sensors and overlays their data.
     if (config.plotDataSources.Plot == 1)
         disp("Plotting All Sources of Data ...")
-        if (configs.plotDataSources.SingleFigure)
+        if (config.plotDataSources.SingleFigure == 1)
             plotAllSourcesOneFigure(processedData, config, rocket)
         else
             plotAllSources(processedData, config, rocket)
@@ -49,7 +49,7 @@ function [] = manager(sourceList, rasAeroIILaunchSite, config, rocket)
     end
 
     % Plot Filtered Data here
-    if (configs.plotFilteredData.Plot)
-        disp("Add some plotting stuff here ...")
-    end
+%     if (configs.plotFilteredData.Plot)
+%         disp("Add some plotting stuff here ...")
+%     end
 end
