@@ -80,7 +80,7 @@ for i = 1:length(sourceList)
     tilt = sourceList{1, i}.gyro.tilt;
     if tilt(1) ~= 361
         %Gyro plots
-        plot(time, tilt, 'DisplayName', sourceList{1, i}.dataTitle)
+        plot(time, tilt, 'DisplayName', sourceList{1, i}.dataTitle, 'LineWidth', lineWidth)
         hold on   
     end
 end
