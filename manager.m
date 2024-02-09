@@ -37,9 +37,19 @@ function [] = manager(sourceList, rasAeroIILaunchSite, config, rocket)
     %% Call plotting functions
 
     % To output just the main things (altitude, tilt, vel, accel, atm,
-    % MaxQ), use plotAllSources. It iterates through all the sensors and
-    % overlays their data.
-    % Assuming SourceList Austin's filtered structure:
-    disp("Plotting Data ...")
-    plotAllSources(filteredData, config, rocket)
+    % MaxQ) for all sources, use plotAllSources. It iterates through all 
+    % the sensors and overlays their data.
+    if (config.plotDataSources.Plot == 1)
+        disp("Plotting All Sources of Data ...")
+        if (config.plotDataSources.SingleFigure == 1)
+            plotAllSourcesOneFigure(processedData, config, rocket)
+        else
+            plotAllSources(processedData, config, rocket)
+        end
+    end
+
+    % Plot Filtered Data here
+%     if (configs.plotFilteredData.Plot)
+%         disp("Add some plotting stuff here ...")
+%     end
 end
