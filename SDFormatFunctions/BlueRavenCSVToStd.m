@@ -70,10 +70,12 @@ function struct = BlueRavenLowCSVToStd(inputFileNames, title)
     struct.gyro.roll = fixedHigh(:,7);                     % [degrees]
     struct.gyro.pitch = fixedHigh(:,8);                    % [degrees]
     struct.gyro.yaw = fixedHigh(:,9);                      % [degrees]
-    struct.gyro.tilt = [];                     % [degrees]
+    struct.gyro.tilt = [361, 361];                     % [degrees]
     
     struct.atmosphere.pressure = fixedLow(:,8)*101325;            % [Pa]
     struct.atmosphere.temperature = ((fixedLow(:,7)-32)*5/9) + 273.15;        % [K]
     struct.atmosphere.density = ...
         struct.atmosphere.pressure ./ (287.1 * struct.atmosphere.temperature);
+
+    struct.performance.dragAcc = calculateDragAcceleration(struct);
     end
