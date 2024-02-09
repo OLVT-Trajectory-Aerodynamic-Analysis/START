@@ -15,6 +15,7 @@ function fixed = StandardTime(csv, timecol)
     %% Contributors:
     %  @author Austin Zary
     %  @created 10/03/2023
+    %  @last edited 02/09/2024
     %
     %% Parsing Input:
     broken = readmatrix(csv);
@@ -37,51 +38,21 @@ function fixed = StandardTime(csv, timecol)
     %% Fixing data to 0.1 time increments
     
     % Initializing fixed data set and setting a reference time vector
-    fixed = zeros(1,n);
     time = round((broken(1,timecol):0.1:broken(m,timecol)),1);
+    if time(1) < broken(1,timecol)
+        time = time(2:end);
+    end
+    fixed = zeros(length(time),n);
     
-    c = 1;
-    
-    for t=broken(1,timecol):0.1:broken(m,timecol)
-    
-        closest = interp1(midway(:,timecol),midway(:,timecol),t,'nearest');
-        closestrow = find(midway(:,timecol) == closest);
-    
-    
-        if closest == time(c) %% Exact time match
-            fixed(c,:) = midway(closestrow,:);
-    
-        elseif closest > time(c) %% Closest reference is past current time
-            for a = 1:n
-                if isnan(midway(closestrow,a)) || isnan(midway(closestrow-1,a))
-                    fixed(c,a) = midway(closestrow,a);
-                elseif a == timecol
-                    fixed(c,a) = t;
-                else
-                    fixed(c,a) = midway(closestrow-1,a) + ...
-                        (t-midway(closestrow-1,timecol)) ...
-                        * (midway(closestrow,a) - midway(closestrow-1,a)) ...
-                        / (midway(closestrow,timecol) - midway(closestrow-1,timecol));
-                end
-            end
-    
-    
-        else %% Closesst Reference is before current time
-            for a = 1:n
-                if isnan(midway(closestrow,a)) || isnan(midway(closestrow+1,a))
-                    fixed(c,a) = midway(closestrow,a);
-                elseif a == timecol
-                    fixed(c,a) = t;
-                else  
-                    fixed(c,a) = midway(closestrow,a) + ...
-                        (t-midway(closestrow,timecol)) ...
-                        * (midway(closestrow+1,a) - midway(closestrow,a)) ...
-                        / (midway(closestrow+1,timecol) - midway(closestrow,timecol));
-                end
-            end
+    % Linear Interpolation for new data points
+    for col = 1:n
+        if ~isnan(midway(1,col)) && col ~= timecol
+            fixed(:,col) = interp1(midway(:,timecol),midway(:,col),time)';
+        elseif col == timecol
+            fixed(:,col) = time;
+        else
+            fixed(:,col) = NaN(length(time),1);
         end
-    
-        c = c + 1;
     end
     
     %% Edge cases to consider and test/add logic for
