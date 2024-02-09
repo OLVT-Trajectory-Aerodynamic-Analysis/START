@@ -73,8 +73,7 @@ for i = 1:length(sourceList)
     if tilt(1) ~= 361
         %Gyro plots
         plot(time, tilt, 'DisplayName', sourceList{1, i}.dataTitle)
-        hold on
-        
+        hold on   
     end
 end
 title('Tilt')
