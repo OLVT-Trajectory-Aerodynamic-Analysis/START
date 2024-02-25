@@ -86,7 +86,7 @@ for i = 1:length(sourceList)
 end
 plotXlines(configs.plotDataSources,  rocket, fig1)
 trimAxis(configs.plotDataSources, sourceList{1, 1})
-ylim([-5, 95])
+ylim([-5, 185])
 title('Tilt', 'FontName', 'Times New Roman', 'FontSize', titleSz)
 xlabel('Time (s)'); ylabel('angle [degrees]')
 legend('Location', 'best')
