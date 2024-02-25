@@ -52,20 +52,20 @@ function struct = BlueRavenLowCSVToStd(inputFileNames, title)
     struct.time = fixedLow(:,5);                           % [s] 
     
     struct.position.magnitude = [];
-    struct.position.altitude = fixedLow(:,9);             % [m]
+    struct.position.altitude = fixedLow(:,9)*0.3048;             % [m]
     struct.position.Xposition = [];
     struct.position.Yposition = [];
-    struct.position.Zposition = fixedLow(:,10);            % [m]
+    struct.position.Zposition = fixedLow(:,10)*0.3048;            % [m]
     
-    struct.velocity.magnitude = sqrt(fixedLow(:,16).^2+fixedLow(:,17).^2+fixedLow(:,18).^2);            % [m/s]
+    struct.velocity.magnitude = sqrt(fixedLow(:,16).^2+fixedLow(:,17).^2+fixedLow(:,18).^2)*0.3048;            % [m/s]
     struct.velocity.Xvelocity = []; 
     struct.velocity.Yvelocity = [];
-    struct.velocity.Zvelocity = fixedLow(:,16);
+    struct.velocity.Zvelocity = fixedLow(:,16)*0.3048;
     
-    struct.acceleration.Xacceleration = fixedHigh(:,10);    % [m/s^2]
-    struct.acceleration.Yacceleration = fixedHigh(:,11);    % [m/s^2]
-    struct.acceleration.Zacceleration = fixedHigh(:,12);    % [m/s^2]
-    struct.acceleration.magnitude = sqrt(fixedHigh(:,10).^2+fixedHigh(:,11).^2+fixedHigh(:,12).^2);         % [m/s^2]
+    struct.acceleration.Xacceleration = 9.81*fixedHigh(:,10);    % [m/s^2]
+    struct.acceleration.Yacceleration = 9.81*fixedHigh(:,11);    % [m/s^2]
+    struct.acceleration.Zacceleration = 9.81*fixedHigh(:,12);    % [m/s^2]
+    struct.acceleration.magnitude = 9.81*sqrt(fixedHigh(:,10).^2+fixedHigh(:,11).^2+fixedHigh(:,12).^2);         % [m/s^2]
 
     struct.gyro.roll = fixedHigh(:,7);                     % [degrees]
     struct.gyro.pitch = fixedHigh(:,8);                    % [degrees]
