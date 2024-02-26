@@ -16,7 +16,7 @@
 %   There are currently no config variables.
 % 
 
-function [] = manager(sourceList, rasAeroIILaunchSite, config, rocket)
+function [] = manager(sourceList, rasAeroIILaunchSite, configs, rocket)
     %% Initialize Variables
     numSources = length(sourceList);
     processedData = {};
@@ -39,13 +39,18 @@ function [] = manager(sourceList, rasAeroIILaunchSite, config, rocket)
     % To output just the main things (altitude, tilt, vel, accel, atm,
     % MaxQ) for all sources, use plotAllSources. It iterates through all 
     % the sensors and overlays their data.
-    if (config.plotDataSources.Plot == 1)
+    if (configs.plotDataSources.Plot == 1)
         disp("Plotting All Sources of Data ...")
-        if (config.plotDataSources.SingleFigure == 1)
-            plotAllSourcesOneFigure(processedData, config, rocket)
+        if (configs.plotDataSources.SingleFigure == 1)
+            plotAllSourcesOneFigure(processedData, configs, rocket)
         else
-            plotAllSources(processedData, config, rocket)
+            plotAllSources(processedData, configs, rocket)
         end
+    end
+
+    if (configs.plotDifferences.Plot == 1)
+        disp("Differences Sources of Data ...")
+        plotDifferences(processedData, configs, rocket)
     end
 
     % Plot Filtered Data here

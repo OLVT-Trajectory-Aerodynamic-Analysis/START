@@ -87,11 +87,11 @@ clear; close all; clc
     configs.plotDataSources.onlyViewAscent = true;
 
 
-    % Plot differenced
-    configs.plotDifferences
+    % Plot differences
+    configs.plotDifferences.Plot = 1;
     configs.plotDataSources.SingleFigure = false; % Not Recommended, slow and not updated
-    configs.plotDataSources.rocketPhaseLines = true;
-    configs.plotDataSources.onlyViewAscent = true;
+    configs.plotDataSources.rocketPhaseLines = false;
+    configs.plotDataSources.onlyViewAscent = false;
 
 
     % If you want only filtered raw Data
