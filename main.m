@@ -81,14 +81,14 @@ clear; close all; clc
     configs.plotDataSources = struct;
 
     % If you want all data sources
-    configs.plotDataSources.Plot = 0;
+    configs.plotDataSources.Plot = 1;
     configs.plotDataSources.SingleFigure = false; % Not Recommended, slow and not updated
     configs.plotDataSources.rocketPhaseLines = true;
     configs.plotDataSources.onlyViewAscent = true;
 
 
     % Plot differences
-    configs.plotDifferences.Plot = 1;
+    configs.plotDifferences.Plot = 0;
     configs.plotDataSources.SingleFigure = false; % Not Recommended, slow and not updated
     configs.plotDataSources.rocketPhaseLines = false;
     configs.plotDataSources.onlyViewAscent = false;

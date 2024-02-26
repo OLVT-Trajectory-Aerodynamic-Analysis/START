@@ -5,7 +5,6 @@
 % @created 02/02/2024
 function [] = plotXlines(configs, rocket, fig1)
     if (configs.rocketPhaseLines)
-    
         %% Calculate the position of the label
         xLims = fig1.CurrentAxes.XLim;
         yLims = fig1.CurrentAxes.YLim;
