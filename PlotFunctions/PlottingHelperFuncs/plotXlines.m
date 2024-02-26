@@ -16,17 +16,32 @@ function [] = plotXlines(configs, rocket, fig1)
         %% Plot the line at Motor Burnout, Separation, and ignition
         hold on
         name1 = "Motor Burnout: " + num2str(rocket.sustainerMotorBurnTime) + " s";
-        xline(rocket.sustainerMotorBurnTime, '-',...
+        xline(rocket.sustainerMotorBurnTime, '--',...
             'Motor Burnout', 'Color', 'black', 'LineWidth', 3, 'DisplayName', name1)
         
+%         hold on
+%         name2 = "Stage Separation: " + num2str(rocket.sustainerMotorBurnTime + rocket.separationDelay) + " s";
+%         xline(rocket.sustainerMotorBurnTime + rocket.separationDelay, '--',...
+%             'Stage Separation', 'Color', 'black', 'LineWidth', 3, 'DisplayName', name2)
+%        
+%         hold on
+%         name3 = "Sustainer Ignition: " + num2str(rocket.sustainerMotorBurnTime + rocket.separationDelay + rocket.ignitionDelay) + " s";
+%         xline(rocket.sustainerMotorBurnTime + rocket.separationDelay + rocket.ignitionDelay, ':' ,...
+%             'Sustainer Ignition', 'Color', 'black', 'LineWidth', 3, 'DisplayName', name3)
+
         hold on
-        name2 = "Stage Separation: " + num2str(rocket.sustainerMotorBurnTime + rocket.separationDelay) + " s";
-        xline(rocket.sustainerMotorBurnTime + rocket.separationDelay, '--',...
-            'Stage Separation', 'Color', 'black', 'LineWidth', 3, 'DisplayName', name2)
-       
+        name4 = "Apogee: " + num2str(13.6) + " s";
+        xline(13.6, '--',...
+            'Apogee', 'Color', 'black', 'LineWidth', 3, 'DisplayName', name4)
+
         hold on
-        name3 = "Sustainer Ignition: " + num2str(rocket.sustainerMotorBurnTime + rocket.separationDelay + rocket.ignitionDelay) + " s";
-        xline(rocket.sustainerMotorBurnTime + rocket.separationDelay + rocket.ignitionDelay, ':' ,...
-            'Sustainer Ignition', 'Color', 'black', 'LineWidth', 3, 'DisplayName', name3)
+        name5 = "Drogue Deploy: " + num2str(14.9) + " s";
+        xline(14.9, '--',...
+            'Drogue Deploy', 'Color', 'black', 'LineWidth', 3, 'DisplayName', name5)
+
+        hold on
+        name6 = "Main Deploy: " + num2str(20.5) + " s";
+        xline(20.5, '--',...
+            'Main Deploy', 'Color', 'black', 'LineWidth', 3, 'DisplayName', name6)
     end
 end

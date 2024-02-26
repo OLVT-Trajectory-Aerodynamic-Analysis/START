@@ -11,7 +11,7 @@ function plotAllSources(sourceList, configs, rocket)
 % This function creates plots of the main data (altitude, tilt, vel,
 % accel, atm), the data collected from each sensor is overlayed into one plot 
 
-set(0, 'DefaultAxesFontSize', 24);
+set(0, 'DefaultAxesFontSize', 15);
 set(0, 'DefaultAxesFontName', 'Times New Roman');
 set(0,'DefaultFigureWindowStyle','docked')
 titleSz = 30;
@@ -86,7 +86,7 @@ for i = 1:length(sourceList)
 end
 plotXlines(configs.plotDataSources,  rocket, fig1)
 trimAxis(configs.plotDataSources, sourceList{1, 1})
-ylim([-5, 95])
+ylim([-5, 185])
 title('Tilt', 'FontName', 'Times New Roman', 'FontSize', titleSz)
 xlabel('Time (s)'); ylabel('angle [degrees]')
 legend('Location', 'best')
