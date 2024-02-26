@@ -107,7 +107,7 @@ clear; close all; clc
     configs.plotDataSources.Plot = 1;
     configs.plotDataSources.SingleFigure = false; % Not Recommended, slow and not updated
     configs.plotDataSources.rocketPhaseLines = true;
-    configs.plotDataSources.onlyViewAscent = false;
+    configs.plotDataSources.onlyViewAscent = true;
 
     % If you want only filtered raw Data
     configs.plotFilteredData.Plot = 0;
