@@ -103,6 +103,7 @@ clear; close all; clc
     %% Call manager functions
     manager(sourceList, rasAeroIILaunchSite, configs, rocket)
     disp("Complete!!")
+    disp("Complete!!")
 end
 
 
