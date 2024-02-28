@@ -48,8 +48,8 @@ for i = 1:length(Raven_time)
 end
 
 % Calculate the difference in velocities
-RAS_vs_Raven = Ras_velocity_aligned - raven_velocity_aligned;
-
+RAS_vs_Raven_velo = Ras_velocity_aligned - raven_velocity_aligned;
+RAS_Raven_ratio_velo = Ras_velocity_aligned ./ raven_velocity_aligned;
 
 
 %% Graph stuff
@@ -66,9 +66,10 @@ RAS_vs_Raven = Ras_velocity_aligned - raven_velocity_aligned;
     fig1 = figure();
     fig1.Name = "Velocity Difference";
    
-    plot(uniform_time, RAS_vs_Raven, 'LineWidth', lineWidth)
-     
-    
+    plot(uniform_time, RAS_vs_Raven_velo, 'LineWidth', lineWidth, 'DisplayName', "Ras - Raven")
+    hold on
+    plot(uniform_time, RAS_Raven_ratio_velo, 'LineWidth', lineWidth, 'DisplayName', "Ras / Raven")
+
     plotXlines(configs.plotDataSources,  rocket, fig1)
     trimAxis(configs.plotDataSources, processedData{1, 1})
     title("RAS vs. Blue Raven Velocity Mag.", 'FontName', 'Times New Roman', 'FontSize', titleSz)
@@ -76,6 +77,6 @@ RAS_vs_Raven = Ras_velocity_aligned - raven_velocity_aligned;
     legend('Location', 'best')
     grid on
     grid minor
-    
+
     
 end
