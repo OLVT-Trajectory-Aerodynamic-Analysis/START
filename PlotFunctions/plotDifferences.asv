@@ -12,8 +12,9 @@ for i=1:length(processedData)
     elseif processedData{1, i}.dataTitle== "Telemega Data"
       TELE_time=processedData{1, i}.time;
       TELE_velocity=processedData{1,i}.velocity.magnitude;
-      TELE_position_z=processedData{1,i}.position.Zposition;
+      TELE_Zposition=processedData{1,i}.position.Zposition;
       TELE_altitude=processedData{1,i}.position.altitude;
+      TELE_acceleration_mag=processedData{1,i}.acceleration.magnitude;
     elseif processedData{1, i}.dataTitle=="BlueRaven Data"
       Raven_time=processedData{1,i}.time;
       Raven_velocity=processedData{1,i}.velocity.magnitude;
@@ -27,8 +28,8 @@ end
 % Determine the start and end times for the uniform time vector
 
 %RAS and Blue Raven
-start_time = min(min(RAS_time), min(Raven_time));
-end_time = max(max(RAS_time), max(Raven_time));
+start_time = min([min(RAS_time) min(Raven_time) min(TELE_time)]);
+end_time = max([max(RAS_time) max(Raven_time) max(TELE_time)]);
 
 % Create a uniform time vector from the earliest start to the latest end with a step of 0.1
 uniform_time = (start_time:0.1:end_time)';
@@ -42,10 +43,16 @@ RAS_Zposition_aligned= zeros(length(uniform_time), 1);
 RAS_altitude_aligned=zeros(length(uniform_time), 1);
 RAS_acceleration_mag_aligned=zeros(length(uniform_time), 1);
 
-raven_velocity_aligned = zeros(length(uniform_time), 1);
+Raven_velocity_aligned = zeros(length(uniform_time), 1);
 Raven_Zposition_aligned=zeros(length(uniform_time), 1);
 Raven_altitude_aligned=zeros(length(uniform_time), 1);
 Raven_acceleration_mag_aligned=zeros(length(uniform_time), 1);
+
+
+TELE_velocity_aligned= zeros(length(uniform_time), 1);
+TELE_Zposition_aligned=zeros(length(uniform_time), 1);
+TELE_altitude_aligned=zeros(length(uniform_time), 1);
+TELE_acceleration_mag_aligned=zeros(length(uniform_time), 1);
 %% Align different data vectors
 %these loops create the new property vectors. 
 %the initialized vectors currently hold zeros that span the uniform time
@@ -78,27 +85,83 @@ for i = 1:length(Raven_time)
     [minValue, index] = min(abs(uniform_time - Raven_time(i)));
     
     if minValue <= tolerance
-        raven_velocity_aligned(index) = Raven_velocity(i);
+        Raven_velocity_aligned(index) = Raven_velocity(i);
         Raven_Zposition_aligned(index)=Raven_Zposition(i);
         Raven_altitude_aligned(index)=Raven_altitude(i);
         Raven_acceleration_mag_aligned(index)=Raven_acceleration_mag(i);
     end
 end
 
+%Telemega
+for i = 1:length(TELE_time)
+    [minValue, index] = min(abs(uniform_time - TELE_time(i)));
+    
+    if minValue <= tolerance
+        TELE_velocity_aligned(index) = TELE_velocity(i);
+        TELE_Zposition_aligned(index)=TELE_Zposition(i);
+        TELE_altitude_aligned(index)=TELE_altitude(i);
+        TELE_acceleration_mag_aligned(index)=TELE_acceleration_mag(i);
+    end
+end
+%%
+
+Target=(configs.plotFilteredData.target);
+if (configs.plotFilteredData.target) == "BlueRaven Data"
+Target_vel=Raven_velocity_aligned;
+Target_Zposition=Raven_Zposition_aligned;
+Target_Altitude=Raven_altitude_aligned;
+Target_acceleration_mag=Raven_acceleration_mag_aligned;
+elseif (configs.plotFilteredData.target)=="Telemega Data"
+    Target_vel=TELE_velocity_aligned;
+    Target_Zposition=TELE_Zposition_aligned;
+    Target_Altitude=TELE_altitude_aligned;
+    Target_acceleration_mag=TELE_acceleration_mag_aligned;
+elseif (configs.plotFilteredData.target)=="RasAeroII Data"
+    Target_vel=RAS_velocity_aligned;
+    Target_Zposition=RAS_Zposition_aligned;
+    Target_Altitude=RAS_altitude_aligned;
+    Target_acceleration_mag=RAS_acceleration_mag_aligned;
+ end
+
+
 %% Calculate the differences in aligned data
-RAS_vs_Raven_velo = RAS_velocity_aligned - raven_velocity_aligned;
-RAS_Raven_ratio_velo = RAS_velocity_aligned ./ raven_velocity_aligned;
 
-RAS_vs_Raven_Zposition=RAS_Zposition_aligned-Raven_Zposition_aligned;
-RAS_vs_Raven_ratio_Zposition=RAS_Zposition_aligned./Raven_Zposition_aligned;
+%velocity
+RAS_vs_Target_velo = Target_vel-RAS_velocity_aligned;
+TELE_vs_Target_velo = Target_vel-TELE_velocity_aligned;
+Raven_vs_Target_velo = Target_vel-Raven_velocity_aligned;
+
+Target_RAS_ratio_velo =Target_vel./RAS_velocity_aligned;
+Target_TELE_ratio_velo =Target_vel./TELE_velocity_aligned;
+Target_Raven_ratio_velo =Target_vel./Raven_velocity_aligned;
+
+%Z position
+RAS_vs_Target_Zposition=Target_Zposition-RAS_Zposition_aligned;
+TELE_vs_Target_Zposition=Target_Zposition-TELE_Zposition_aligned;
+Raven_vs_Target_Zposition=Target_Zposition-Raven_Zposition_aligned;
+
+Target_RAS_ratio_Zposition=Target_Zposition./RAS_Zposition_aligned;
+Target_TELE_ratio_Zposition=Target_Zposition./TELE_Zposition_aligned;
+Target_Raven_ratio_Zposition=Target_Zposition./Raven_Zposition_aligned;
+
+%Altitdue
+RAS_vs_Target_alt=Target_Altitude-RAS_altitude_aligned;
+TELE_vs_Target_alt=Target_Altitude-TELE_altitude_aligned;
+Raven_vs_Target_alt=Target_Altitude-Raven_altitude_aligned;
+
+Target_RAS_ratio_alt=Target_Altitude./RAS_altitude_aligned;
+Target_TELE_ratio_alt=Target_Altitude./TELE_altitude_aligned;
+Target_Raven_ratio_alt=Target_Altitude./Raven_altitude_aligned;
 
 
-RAS_vs_Raven_alt=RAS_altitude_aligned-Raven_altitude_aligned;
-RAS_vs_Raven_ratio_alt=RAS_altitude_aligned./Raven_altitude_aligned;
+%Acceleration Magnitude
+RAS_vs_Target_acceleration_mag=Target_acceleration_mag-RAS_acceleration_mag_aligned;
+TELE_vs_Target_acceleration_mag=Target_acceleration_mag-TELE_acceleration_mag_aligned;
+Raven_vs_Target_acceleration_mag=Target_acceleration_mag-Raven_acceleration_mag_aligned;
 
-RAS_vs_Raven_acceleration_mag=RAS_acceleration_mag_aligned-Raven_acceleration_mag_aligned;
-RAS_vs_Raven_ratio_acceleration_mag=RAS_acceleration_mag_aligned./Raven_acceleration_mag_aligned;
-
+Target_RAS_ratio_acceleration_mag=Target_acceleration_mag./RAS_acceleration_mag_aligned;
+Target_TELE_ratio_acceleration_mag=Target_acceleration_mag./TELE_acceleration_mag_aligned;
+Target_Raven_ratio_acceleration_mag=Target_acceleration_mag./Raven_acceleration_mag_aligned;
 
 %% Graph stuff
 
@@ -114,9 +177,26 @@ RAS_vs_Raven_ratio_acceleration_mag=RAS_acceleration_mag_aligned./Raven_accelera
     fig1 = figure();
     fig1.Name = "Velocity Difference";
    
-    plot(uniform_time, RAS_vs_Raven_velo, 'LineWidth', lineWidth, 'DisplayName', "Ras - Raven")
+    if any(RAS_vs_Target_velo ~= 0)
+    
+    plot(uniform_time, RAS_vs_Target_velo, 'LineWidth', lineWidth, 'DisplayName', Target + " - RAS")
     hold on
-    plot(uniform_time, RAS_Raven_ratio_velo, 'LineWidth', lineWidth, 'DisplayName', "Ras / Raven")
+    plot(uniform_time, Target_RAS_ratio_velo, 'LineWidth', lineWidth, 'DisplayName', Target + " / RAS")
+    end 
+    if any(TELE_vs_Target_velo ~= 0)
+    
+    plot(uniform_time, TELE_vs_Target_velo, 'LineWidth', lineWidth, 'DisplayName', Target + " - TELE")
+    hold on
+    plot(uniform_time, Target_TELE_ratio_velo, 'LineWidth', lineWidth, 'DisplayName', Target + " / TELE")
+    end
+
+    if any(Raven_vs_Target_velo ~= 0)
+    
+    plot(uniform_time, Raven_vs_Target_velo, 'LineWidth', lineWidth, 'DisplayName', Target + " - Raven ")
+    hold on
+    plot(uniform_time, Target_Raven_ratio_velo, 'LineWidth', lineWidth, 'DisplayName', Target + " / Raven")
+    end
+hold off
 
     plotXlines(configs.plotDataSources,  rocket, fig1)
     trimAxis(configs.plotDataSources, processedData{1, 1})
@@ -131,9 +211,26 @@ RAS_vs_Raven_ratio_acceleration_mag=RAS_acceleration_mag_aligned./Raven_accelera
     fig2 = figure();
     fig2.Name = "Z-Position Difference";
    
-    plot(uniform_time, RAS_vs_Raven_Zposition, 'LineWidth', lineWidth, 'DisplayName', "Ras - Raven")
+    if any(RAS_vs_Target_Zposition ~= 0)
+    
+    plot(uniform_time, RAS_vs_Target_Zposition, 'LineWidth', lineWidth, 'DisplayName', Target + " - RAS")
     hold on
-    plot(uniform_time, RAS_vs_Raven_ratio_Zposition, 'LineWidth', lineWidth, 'DisplayName', "Ras / Raven")
+    plot(uniform_time, Target_RAS_ratio_Zposition, 'LineWidth', lineWidth, 'DisplayName', Target + " / RAS")
+    end 
+    if any(TELE_vs_Target_Zposition ~= 0)
+    
+    plot(uniform_time, TELE_vs_Target_Zposition, 'LineWidth', lineWidth, 'DisplayName', Target + " - TELE")
+    hold on
+    plot(uniform_time, Target_TELE_ratio_Zposition, 'LineWidth', lineWidth, 'DisplayName', Target + " / TELE")
+    end
+
+    if any(Raven_vs_Target_Zposition ~= 0)
+    
+    plot(uniform_time, Raven_vs_Target_Zposition, 'LineWidth', lineWidth, 'DisplayName', Target + " - Raven ")
+    hold on
+    plot(uniform_time, Target_Raven_ratio_Zposition, 'LineWidth', lineWidth, 'DisplayName', Target + " / Raven")
+    end
+hold off
 
     plotXlines(configs.plotDataSources,  rocket, fig2)
     trimAxis(configs.plotDataSources, processedData{1, 1})
@@ -145,14 +242,29 @@ RAS_vs_Raven_ratio_acceleration_mag=RAS_acceleration_mag_aligned./Raven_accelera
 
 
     %Altitude
-    %Position Magnitude
     fig3 = figure();
     fig3.Name = "Altitude Difference";
    
-    plot(uniform_time, RAS_vs_Raven_alt, 'LineWidth', lineWidth, 'DisplayName', "Ras - Raven")
+    if any(RAS_vs_Target_alt ~= 0)
+    
+    plot(uniform_time, RAS_vs_Target_alt, 'LineWidth', lineWidth, 'DisplayName', Target + " - RAS")
     hold on
-    plot(uniform_time, RAS_vs_Raven_ratio_alt, 'LineWidth', lineWidth, 'DisplayName', "Ras / Raven")
+    plot(uniform_time, Target_RAS_ratio_Zposition, 'LineWidth', lineWidth, 'DisplayName', Target + " / RAS")
+    end 
+    if any(TELE_vs_Target_Zposition ~= 0)
+    
+    plot(uniform_time, TELE_vs_Target_alt, 'LineWidth', lineWidth, 'DisplayName', Target + " - TELE")
+    hold on
+    plot(uniform_time, Target_TELE_ratio_alt, 'LineWidth', lineWidth, 'DisplayName', Target + " / TELE")
+    end
 
+    if any(Raven_vs_Target_Zposition ~= 0)
+    
+    plot(uniform_time, Raven_vs_Target_alt, 'LineWidth', lineWidth, 'DisplayName', Target + " - Raven ")
+    hold on
+    plot(uniform_time, Target_Raven_ratio_alt, 'LineWidth', lineWidth, 'DisplayName', Target + " / Raven")
+    end
+hold off
     plotXlines(configs.plotDataSources,  rocket, fig3)
     trimAxis(configs.plotDataSources, processedData{1, 1})
     title("RAS vs. Blue Raven Altitude", 'FontName', 'Times New Roman', 'FontSize', titleSz)
@@ -160,5 +272,22 @@ RAS_vs_Raven_ratio_acceleration_mag=RAS_acceleration_mag_aligned./Raven_accelera
     legend('Location', 'best')
     grid on
     grid minor
+
+    %Acceleration Magnitude
+    fig4 = figure();
+    fig4.Name = "Acceleration Difference";
+   
+    plot(uniform_time, RAS_vs_Target_acceleration_mag, 'LineWidth', lineWidth, 'DisplayName', "Ras - Raven")
+    hold on
+    plot(uniform_time, Target_RAS_ratio_acceleration_mag, 'LineWidth', lineWidth, 'DisplayName', "Ras / Raven")
+
+    plotXlines(configs.plotDataSources,  rocket, fig4)
+    trimAxis(configs.plotDataSources, processedData{1, 1})
+    title("RAS vs. Blue Raven Acceleration", 'FontName', 'Times New Roman', 'FontSize', titleSz)
+    xlabel('Time [s]'); ylabel('Acceleration [m/s^2]')
+    legend('Location', 'best')
+    grid on
+    grid minor
+
     
 end
