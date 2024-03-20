@@ -89,10 +89,10 @@ clear; close all; clc
 
     % Plot differences
     configs.plotDifferences.Plot = 1;
-    configs.plotDataSources.SingleFigure = false; % Not Recommended, slow and not updated
-    configs.plotDataSources.rocketPhaseLines = true;
-    configs.plotDataSources.onlyViewAscent = true;
-
+    configs.plotDifferences.SingleFigure = false; % Not Recommended, slow and not updated
+    configs.plotDifferences.rocketPhaseLines = true;
+    configs.plotDifferences.onlyViewAscent = true;
+    configs.plotDifferences.target = "BlueRaven Data";
 
     % If you want only filtered raw Data
     %Target Sensor is the sensor you want to compare all of the other
@@ -101,7 +101,7 @@ clear; close all; clc
     configs.plotFilteredData.SingleFigure = false; % Not Recommended, slow and not updated
     configs.plotFilteredData.rocketPhaseLines = false;
     configs.plotFilteredData.onlyViewAscent = true;
-    configs.plotFilteredData.target = "BlueRaven Data";
+    
 
     %% Call manager functions
     manager(sourceList, rasAeroIILaunchSite, configs, rocket)
