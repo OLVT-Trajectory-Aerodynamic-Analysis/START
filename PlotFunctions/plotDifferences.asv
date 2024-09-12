@@ -1,0 +1,434 @@
+function [] = plotDifferences(processedData, configs, rocket)
+%% Separate Data
+
+% for i=1:length(processedData)
+% 
+%     if processedData{1, i}.dataTitle == "RasAeroII Data"
+%       RAS_time=processedData{1, i}.time;
+%       RAS_velocity=processedData{1,i}.velocity.magnitude;
+%       RAS_Zposition=processedData{1,i}.position.Zposition;
+%       RAS_altitude=processedData{1,i}.position.altitude;
+%       RAS_acceleration_mag=processedData{1,i}.acceleration.magnitude;
+%     elseif processedData{1, i}.dataTitle== "Telemega Data"
+%       TELE_time=processedData{1, i}.time;
+%       TELE_velocity=processedData{1,i}.velocity.magnitude;
+%       TELE_Zposition=processedData{1,i}.position.Zposition;
+%       TELE_altitude=processedData{1,i}.position.altitude;
+%       TELE_acceleration_mag=processedData{1,i}.acceleration.magnitude;
+%     elseif processedData{1, i}.dataTitle=="BlueRaven Data"
+%       Raven_time=processedData{1,i}.time;
+%       Raven_velocity=processedData{1,i}.velocity.magnitude;
+%       Raven_Zposition=processedData{1,i}.position.Zposition;
+%       Raven_altitude=processedData{1,i}.position.altitude;
+%       Raven_acceleration_mag=processedData{1,i}.acceleration.magnitude;
+%     end
+% end
+
+% Initialize a struct to hold processed sensor data for easy access
+sensorData = struct();
+
+for i = 1:length(processedData)
+    % Use the dataTitle as a valid field name by removing spaces and special characters,
+    % or you could directly use it if your data titles are already valid MATLAB field names.
+    % This example assumes dataTitle is a valid MATLAB field name.
+   
+    dataTitle = matlab.lang.makeValidName(processedData{1, i}.dataTitle);
+    % Dynamically create fields in the sensorData struct using dataTitle
+    sensorData.(dataTitle).time = processedData{1, i}.time;
+    sensorData.(dataTitle).velocity = processedData{1,i}.velocity.magnitude;
+    sensorData.(dataTitle).Zposition = processedData{1,i}.position.Zposition;
+    sensorData.(dataTitle).altitude = processedData{1,i}.position.altitude;
+    sensorData.(dataTitle).acceleration_mag = processedData{1,i}.acceleration.magnitude;
+end
+
+
+%% Create uniform time vectors
+% Determine the start and end times for the uniform time vector
+
+% %RAS and Blue Raven
+% start_time = min([min(RAS_time) min(Raven_time) min(TELE_time)]);
+% end_time = max([max(RAS_time) max(Raven_time) max(TELE_time)]);
+% 
+% % Create a uniform time vector from the earliest start to the latest end with a step of 0.1
+% uniform_time = (start_time:0.1:end_time)';
+
+% Initialize variables to store the global min and max times
+globalMinTime = 0; % Set to Infinity initially
+globalMaxTime = 0; % Set to Negative Infinity initially
+
+% Iterate over each sensor in sensorData to update global min/max times
+sensorNames = fieldnames(sensorData); % Get a list of all sensor names
+
+for i = 1:length(sensorNames)
+    sensorName = sensorNames{i};
+    
+    % Update globalMinTime and globalMaxTime
+    currentMinTime = min(sensorData.(sensorName).time);
+    currentMaxTime = max(sensorData.(sensorName).time);
+    globalMinTime = min(globalMinTime, currentMinTime);
+    globalMaxTime = max(globalMaxTime, currentMaxTime);
+end
+
+
+uniform_time = globalMinTime:0.1:globalMaxTime;
+
+% uniform_time is now a time vector that spans from the earliest time
+% in any of the sensors to the latest time in any of the sensors
+
+%% Initialize vectors to hold aligned property values values
+
+for i = 1:length(sensorNames)
+    
+sensorName = sensorNames{i};
+
+sensorData.(sensorName).velocityAligned =zeros(length(uniform_time), 1);
+sensorData.(sensorName).ZpositionAligned = zeros(length(uniform_time), 1);
+sensorData.(sensorName).altitudeAligned = zeros(length(uniform_time), 1);
+sensorData.(sensorName).acceleration_magAligned = zeros(length(uniform_time), 1);   
+
+end
+
+%% Align different data vectors
+% %these loops create the new property vectors. 
+% %the initialized vectors currently hold zeros that span the uniform time
+% %vector. The loop will fill in the values that the sensor provides for the
+% %time values that match the uniform time vector. If the sensor does not have
+% %a value for the time in the uniform time vector, it will remain zero.
+% 
+% 
+% tolerance = 1e-5; % Define tolerance for matching times
+%                   %If the difference is greater than this, they do not
+%                   %match
+% %RAS 
+% for i = 1:length(RAS_time)
+%     % Calculate the absolute difference between RAS_time(i) and all uniform_time values
+%     %Index corresponds to the position in the uniform time vector
+%     [minValue, index] = min(abs(uniform_time - RAS_time(i)));
+% 
+%     % Check if the closest match is within the tolerance
+%     %if match, assign the value to the aligned vector
+%     if minValue <= tolerance
+%         RAS_velocity_aligned(index) = RAS_velocity(i);
+%         RAS_Zposition_aligned(index)=RAS_Zposition(i);
+%         RAS_altitude_aligned(index)=RAS_altitude(i);
+%         RAS_acceleration_mag_aligned(index)=RAS_acceleration_mag(i);
+%     end
+% end
+% 
+% %Blue Raven
+% for i = 1:length(Raven_time)
+%     [minValue, index] = min(abs(uniform_time - Raven_time(i)));
+% 
+%     if minValue <= tolerance
+%         Raven_velocity_aligned(index) = Raven_velocity(i);
+%         Raven_Zposition_aligned(index)=Raven_Zposition(i);
+%         Raven_altitude_aligned(index)=Raven_altitude(i);
+%         Raven_acceleration_mag_aligned(index)=Raven_acceleration_mag(i);
+%     end
+% end
+% 
+% %Telemega
+% for i = 1:length(TELE_time)
+%     [minValue, index] = min(abs(uniform_time - TELE_time(i)));
+% 
+%     if minValue <= tolerance
+%         TELE_velocity_aligned(index) = TELE_velocity(i);
+%         TELE_Zposition_aligned(index)=TELE_Zposition(i);
+%         TELE_altitude_aligned(index)=TELE_altitude(i);
+%         TELE_acceleration_mag_aligned(index)=TELE_acceleration_mag(i);
+%     end
+% end
+% Define tolerance for matching times
+tolerance = 1e-5;
+
+
+
+for i = 1:length(sensorNames)
+    sensorName = sensorNames{i};
+    
+    % Extract the original time vector for the current sensor
+    originalTime = sensorData.(sensorName).time;
+    
+    % Iterate over each property (velocity, Zposition, etc.) to align
+    properties = fieldnames(sensorData.(sensorName)); % Get all properties of the sensor
+    for j = 1:length(properties)
+        propertyName = properties{j};
+        
+        % Skip aligning the 'time' property since we're using it as reference
+        if strcmp(propertyName, 'time')
+            continue;
+        end
+        
+        % Initialize aligned vector with zeros
+        alignedVector = zeros(length(uniform_time), 1);
+        
+        % Original data vector for the current property
+        originalData = sensorData.(sensorName).(propertyName);
+        
+        % Align the data
+        for k = 1:length(originalTime)
+            [minValue, index] = min(abs(uniform_time - originalTime(k)));
+            if minValue <= tolerance
+                alignedVector(index) = originalData(k);
+            end
+        end
+        % Only add the 'Aligned' suffix if not already present
+        if ~contains(propertyName, 'Aligned')
+            alignedPropertyName = strcat(propertyName, 'Aligned');
+            sensorData.(sensorName).(alignedPropertyName) = alignedVector;
+        end
+        
+    end
+end
+
+%%
+
+% Assume configs.plotDifferences.target contains the target sensor's name
+% Make the target sensor name a valid MATLAB field name
+TargetName = matlab.lang.makeValidName(configs.plotDifferences.target);
+
+% Initialize the Target struct
+Target = struct();
+
+% Find the target sensor and extract its properties
+
+for i = 1:length(sensorNames)
+    sensorName = sensorNames{i};
+    if strcmp(sensorName, TargetName) % Use strcmp for string comparison
+        % Dynamically extract all aligned properties
+        properties = fieldnames(sensorData.(sensorName)); % Get all properties of the sensor
+        for j = 1:length(properties)
+            propertyName = properties{j};
+            % Check if the property name ends with 'Aligned'
+            if endsWith(propertyName, 'Aligned')
+                % Extract and store aligned properties in the Target struct
+                Target.(propertyName) = sensorData.(sensorName).(propertyName);
+            end
+        end
+        break; % Exit loop once target sensor is found and processed
+    end
+end
+
+
+
+%% Calculate the differences in aligned data
+% Initialize Differences as a struct with fields for Subtraction and Ratio
+Differences = struct('Subtraction', struct(), 'Ratio', struct());
+
+for i = 1:length(sensorNames)
+    sensorName = sensorNames{i};
+    
+    % Skip the target sensor
+    if strcmp(sensorName, TargetName)
+        continue
+    else
+        properties = fieldnames(sensorData.(sensorName)); % Get all properties of the sensor
+        for j = 1:length(properties)
+            propertyName = properties{j};
+            
+            % Process only properties that end with 'Aligned'
+            if endsWith(propertyName, 'Aligned')
+                % Calculate subtraction and ratio
+                % Ensure the target sensor data is accessed correctly
+                targetPropertyData = sensorData.(TargetName).(propertyName);
+                currentSensorPropertyData = sensorData.(sensorName).(propertyName);
+                
+                Differences.Subtraction.(sensorName).(propertyName) = targetPropertyData - currentSensorPropertyData;
+                Differences.Ratio.(sensorName).(propertyName) = targetPropertyData ./ currentSensorPropertyData;
+            end
+        end
+    end
+end
+
+
+%% Graph stuff
+
+% Preliminary setup
+set(0, 'DefaultAxesFontSize', 15);
+set(0, 'DefaultAxesFontName', 'Times New Roman');
+set(0,'DefaultFigureWindowStyle','docked');
+titleSz = 30;
+lineWidth = 2;
+
+% Assuming TargetName contains the name of the target sensor
+properties = fieldnames(Differences.Subtraction.(sensorNames{1})); % Example to get properties, assuming all sensors have the same
+
+for i = 1:length(sensorNames)
+    sensorName = sensorNames{i};
+    
+    % Skip plotting for the target sensor comparing to itself
+    if strcmp(sensorName, TargetName)
+        continue;
+    end
+    
+    for j = 1:length(properties)
+        propertyName = properties{j};
+        readablePropertyName = strrep(propertyName, 'Aligned', ''); % Adjust property name for display
+        
+        % Create new figure for each property comparison between target and current sensor
+        fig = figure();
+        fig.Name = [readablePropertyName ' Difference'];
+        
+        yyaxis left; % Left axis for subtraction
+        subtractionData = Differences.Subtraction.(sensorName).(propertyName);
+        % Plot subtraction (Target - Sensor)
+        plot(uniform_time, subtractionData, 'LineWidth', lineWidth, 'DisplayName', TargetName + " " + sensorName);
+        ylabel([readablePropertyName ' Difference']);
+        
+        yyaxis right; % Right axis for ratio
+        ratioData = Differences.Ratio.(sensorName).(propertyName);
+        % Plot ratio (Target / Sensor)
+        plot(uniform_time, ratioData, 'LineWidth', lineWidth, 'DisplayName', TargetName + "" / "" + sensorName);
+        ylabel([readablePropertyName ' Ratio']);
+        
+        % General plot formatting
+        title([TargetName ' vs. ' sensorName ' - ' readablePropertyName ' Comparison'], 'FontName', 'Times New Roman', 'FontSize', titleSz);
+        xlabel('Time [s]');
+        legend('Location', 'best');
+        grid on;
+        grid minor;
+    end
+end
+
+    % set(0, 'DefaultAxesFontSize', 15);
+    % set(0, 'DefaultAxesFontName', 'Times New Roman');
+    % set(0,'DefaultFigureWindowStyle','docked')
+    % titleSz = 30;
+    % lineWidth = 2;
+    % 
+    
+%     % Velocity Magnitude
+%     fig1 = figure();
+%     fig1.Name = "Velocity Difference";
+% 
+%     for i=1:length(Differences.Ratio)
+% 
+%     plot(uniform_time, RAS_vs_Target_velo, 'LineWidth', lineWidth, 'DisplayName', Target + " - RAS")
+%     hold on
+%     plot(uniform_time, Target_RAS_ratio_velo, 'LineWidth', lineWidth, 'DisplayName', Target + " / RAS")
+%     end 
+%     if any(TELE_vs_Target_velo ~= 0)
+% 
+%     plot(uniform_time, TELE_vs_Target_velo, 'LineWidth', lineWidth, 'DisplayName', Target + " - TELE")
+%     hold on
+%     plot(uniform_time, Target_TELE_ratio_velo, 'LineWidth', lineWidth, 'DisplayName', Target + " / TELE")
+%     end
+% 
+%     if any(Raven_vs_Target_velo ~= 0)
+% 
+%     plot(uniform_time, Raven_vs_Target_velo, 'LineWidth', lineWidth, 'DisplayName', Target + " - Raven ")
+%     hold on
+%     plot(uniform_time, Target_Raven_ratio_velo, 'LineWidth', lineWidth, 'DisplayName', Target + " / Raven")
+%     end
+% hold off
+% 
+%     plotXlines(configs.plotDataSources,  rocket, fig1)
+%     trimAxis(configs.plotDataSources, processedData{1, 1})
+%     title("RAS vs. Blue Raven Velocity Mag.", 'FontName', 'Times New Roman', 'FontSize', titleSz)
+%     xlabel('Time [s]'); ylabel('Velocity Mag. [m/s]')
+%     legend('Location', 'best')
+%     grid on
+%     grid minor
+% 
+% 
+%     %Z Position 
+%     fig2 = figure();
+%     fig2.Name = "Z-Position Difference";
+% 
+%     if any(RAS_vs_Target_Zposition ~= 0)
+% 
+%     plot(uniform_time, RAS_vs_Target_Zposition, 'LineWidth', lineWidth, 'DisplayName', Target + " - RAS")
+%     hold on
+%     plot(uniform_time, Target_RAS_ratio_Zposition, 'LineWidth', lineWidth, 'DisplayName', Target + " / RAS")
+%     end 
+%     if any(TELE_vs_Target_Zposition ~= 0)
+% 
+%     plot(uniform_time, TELE_vs_Target_Zposition, 'LineWidth', lineWidth, 'DisplayName', Target + " - TELE")
+%     hold on
+%     plot(uniform_time, Target_TELE_ratio_Zposition, 'LineWidth', lineWidth, 'DisplayName', Target + " / TELE")
+%     end
+% 
+%     if any(Raven_vs_Target_Zposition ~= 0)
+% 
+%     plot(uniform_time, Raven_vs_Target_Zposition, 'LineWidth', lineWidth, 'DisplayName', Target + " - Raven ")
+%     hold on
+%     plot(uniform_time, Target_Raven_ratio_Zposition, 'LineWidth', lineWidth, 'DisplayName', Target + " / Raven")
+%     end
+% hold off
+% 
+%     plotXlines(configs.plotDataSources,  rocket, fig2)
+%     trimAxis(configs.plotDataSources, processedData{1, 1})
+%     title("RAS vs. Blue Raven Z-Position ", 'FontName', 'Times New Roman', 'FontSize', titleSz)
+%     xlabel('Time [s]'); ylabel('Position Mag. [m]')
+%     legend('Location', 'best')
+%     grid on
+%     grid minor
+% 
+% 
+%     %Altitude
+%     fig3 = figure();
+%     fig3.Name = "Altitude Difference";
+% 
+%     if any(RAS_vs_Target_alt ~= 0)
+% 
+%     plot(uniform_time, RAS_vs_Target_alt, 'LineWidth', lineWidth, 'DisplayName', Target + " - RAS")
+%     hold on
+%     plot(uniform_time, Target_RAS_ratio_Zposition, 'LineWidth', lineWidth, 'DisplayName', Target + " / RAS")
+%     end 
+%     if any(TELE_vs_Target_Zposition ~= 0)
+% 
+%     plot(uniform_time, TELE_vs_Target_alt, 'LineWidth', lineWidth, 'DisplayName', Target + " - TELE")
+%     hold on
+%     plot(uniform_time, Target_TELE_ratio_alt, 'LineWidth', lineWidth, 'DisplayName', Target + " / TELE")
+%     end
+% 
+%     if any(Raven_vs_Target_Zposition ~= 0)
+% 
+%     plot(uniform_time, Raven_vs_Target_alt, 'LineWidth', lineWidth, 'DisplayName', Target + " - Raven ")
+%     hold on
+%     plot(uniform_time, Target_Raven_ratio_alt, 'LineWidth', lineWidth, 'DisplayName', Target + " / Raven")
+%     end
+% hold off
+% 
+%     plotXlines(configs.plotDataSources,  rocket, fig3)
+%     trimAxis(configs.plotDataSources, processedData{1, 1})
+%     title("RAS vs. Blue Raven Altitude", 'FontName', 'Times New Roman', 'FontSize', titleSz)
+%     xlabel('Time [s]'); ylabel('Altitude [m]')
+%     legend('Location', 'best')
+%     grid on
+%     grid minor
+% 
+%     %Acceleration Magnitude
+%     fig4 = figure();
+%     fig4.Name = "Acceleration Difference";
+% 
+%    if any(RAS_vs_Target_acceleration_mag ~= 0)
+% 
+%     plot(uniform_time, RAS_vs_Target_acceleration_mag, 'LineWidth', lineWidth, 'DisplayName', Target + " - RAS")
+%     hold on
+%     plot(uniform_time, Target_RAS_ratio_Zposition, 'LineWidth', lineWidth, 'DisplayName', Target + " / RAS")
+%     end 
+%     if any(TELE_vs_Target_Zposition ~= 0)
+% 
+%     plot(uniform_time, TELE_vs_Target_acceleration_mag, 'LineWidth', lineWidth, 'DisplayName', Target + " - TELE")
+%     hold on
+%     plot(uniform_time, Target_TELE_ratio_acceleration_mag, 'LineWidth', lineWidth, 'DisplayName', Target + " / TELE")
+%     end
+% 
+%     if any(Raven_vs_Target_Zposition ~= 0)
+% 
+%     plot(uniform_time, Raven_vs_Target_acceleration_mag, 'LineWidth', lineWidth, 'DisplayName', Target + " - Raven ")
+%     hold on
+%     plot(uniform_time, Target_Raven_ratio_acceleration_mag, 'LineWidth', lineWidth, 'DisplayName', Target + " / Raven")
+%     end
+% hold off
+%     plotXlines(configs.plotDataSources,  rocket, fig4)
+%     trimAxis(configs.plotDataSources, processedData{1, 1})
+%     title("RAS vs. Blue Raven Acceleration", 'FontName', 'Times New Roman', 'FontSize', titleSz)
+%     xlabel('Time [s]'); ylabel('Acceleration [m/s^2]')
+%     legend('Location', 'best')
+%     grid on
+%     grid minor
+
+    
+end
